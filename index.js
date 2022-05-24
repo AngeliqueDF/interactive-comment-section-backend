@@ -35,5 +35,13 @@ server.listen(5000, () => {
       }
       console.log("\x1b[34m", "Table comments created");
     });
+
+    db.run(Comment.createCommentVotesTable(), (err) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log("\x1b[34m", "Table comments_votes created");
+    });
+
   });
 });
