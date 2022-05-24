@@ -157,5 +157,22 @@ describe('POST "/api/comments"', () => {
     // expect(response.body).toBe({ error: "missing required field(s)" });
   });
 
+  test("When optional values are not provided, they return the correct default value", async () => {
+    const NEW_COMMENT_REQUIRED_ONLY = {
+      content:
+        "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+      user: 1,
+    };
+    const response = await api
+      .post(API_URL)
+      .send(NEW_COMMENT_REQUIRED_ONLY)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    expect(response.body.score).toEqual(0);
+    expect(response.body.replyingToComment).toEqual(null);
+  });
+});
+
 
 });
