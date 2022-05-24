@@ -138,5 +138,14 @@ describe('POST "/api/comments"', () => {
     );
   });
 
+  test("Return an error when the user id is missing", async () => {
+    const response = await api
+      .post(API_URL)
+      .send({ ...NEW_COMMENT_ALL, user: null })
+      .expect(403)
+      .expect("Content-Type", /application\/json/);
+
+    // expect(response.body).toBe({ error: "missing required field(s)" });
+  });
 
 });
