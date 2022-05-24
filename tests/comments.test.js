@@ -123,5 +123,20 @@ describe('POST "/api/comments"', () => {
     createdAt: spy.mock.instances[0],
     replyingToComment: 1,
   };
+  test("Return the added comment", async () => {
+    const response = await api
+      .post(API_URL)
+      .send(NEW_COMMENT_ALL)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    expect(response.body.content).toEqual(NEW_COMMENT_ALL.content);
+    expect(response.body.user).toEqual(NEW_COMMENT_ALL.user);
+    expect(response.body.createdAt).toEqual(spy.mock.instances[0]); // check we called the correct function
+    expect(response.body.replyingToComment).toEqual(
+      NEW_COMMENT_ALL.replyingToComment
+    );
+  });
+
 
 });
