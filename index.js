@@ -19,7 +19,8 @@ server.listen(5000, () => {
   console.log("Please wait while the database is created");
 
   db.serialize(() => {
-    db.run(Comment.dropCommentsTable());
+    db.run("DROP TABLE IF EXISTS comments;");
+    db.run("DROP TABLE IF EXISTS comment_votes;");
     db.run("DROP TABLE IF EXISTS users;");
 
     db.run(User.createUsersTable(), (err) => {
