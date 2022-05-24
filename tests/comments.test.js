@@ -79,3 +79,8 @@ const INITIAL_COMMENTS = [
   },
 ];
 
+
+afterEach(() => {
+  db.run(`DELETE FROM comments;`);
+});
+
