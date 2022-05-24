@@ -147,5 +147,15 @@ describe('POST "/api/comments"', () => {
 
     // expect(response.body).toBe({ error: "missing required field(s)" });
   });
+  test("Return an error when the content is missing", async () => {
+    const response = await api
+      .post(API_URL)
+      .send({ ...NEW_COMMENT_ALL, content: null })
+      .expect(403)
+      .expect("Content-Type", /application\/json/);
+
+    // expect(response.body).toBe({ error: "missing required field(s)" });
+  });
+
 
 });
