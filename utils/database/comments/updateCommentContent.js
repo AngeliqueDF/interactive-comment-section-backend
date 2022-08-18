@@ -10,4 +10,4 @@ const statement = db.prepare(Comment.updateCommentContent());
 
 const newContent = "Updated with updateCommentContent.js";
 
-statement.run({ $newContent: newContent, $commentId: 1 });
+statement.run({ $newContent: newContent, $commentID: 1 });
