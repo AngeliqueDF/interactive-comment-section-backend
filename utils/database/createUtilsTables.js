@@ -1,8 +1,11 @@
 const path = require("path");
-const { db } = require(path.resolve(__dirname, "./connectTestDatabase"));
 
-const Comment = require("./../../models/comment");
-const User = require("./../../models/user");
+const db = require(path.resolve(
+	__dirname,
+	"./../../models/connectUtilsTestDatabase"
+))();
+const Comment = require("../../models/comment");
+const User = require("../../models/user");
 
 db.serialize(() => {
 	db.run(Comment.dropCommentsTable());
