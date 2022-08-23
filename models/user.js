@@ -5,4 +5,6 @@ const createUsersTable = () => `CREATE TABLE users (
     webp TEXT
   );`;
 
-module.exports = { createUsersTable };
+const dropUsersTable = () => "DROP TABLE IF EXISTS users;";
+
+module.exports = { dropUsersTable, createUsersTable };
