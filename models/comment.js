@@ -10,8 +10,10 @@ const createCommentsTable = () => `
     score INTEGER DEFAULT 0,
     user INTEGER NOT NULL,
     replyingToComment INTEGER DEFAULT NULL,
+    replyingToUser INTEGER DEFAULT NULL,
     FOREIGN KEY(user) REFERENCES users(id),
-    FOREIGN KEY(replyingToComment) REFERENCES comments(id)
+    FOREIGN KEY(replyingToComment) REFERENCES comments(id),
+    FOREIGN KEY(replyingToUser) REFERENCES users(id)
   );`;
 
 // Create comments votes table
