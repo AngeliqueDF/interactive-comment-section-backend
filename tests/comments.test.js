@@ -1,19 +1,13 @@
-const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
-const db = new sqlite3.Database(
-  path.resolve(__dirname, "./../database.sqlite"),
-  (err) => {
-    if (err) {
-      console.log(err);
-    }
-  }
+const { db } = require(path.resolve(__dirname, "./../models/connectDatabase"))(
+	"./../models/tdd-tests-database.sqlite"
 );
 
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 
-const Comment = require("./../models/comment");
+const Comment = require(path.resolve(__dirname, "./../models/comment"));
 
 const API_URL = "/api/comments";
 
