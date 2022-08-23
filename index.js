@@ -4,43 +4,41 @@ const { db } = require(path.resolve(
 	"./models/connectDatabase.js"
 ))();
 
-console.log("index.js");
-
 const Comment = require("./models/comment");
 const User = require("./models/user");
 
 const http = require("http");
 const app = require("./app");
 const server = http.createServer(app);
-server.listen(5000, () => {
-  console.log(`Server running on port ${5000}`);
-  console.log("Please wait while the database is created");
 
-  db.serialize(() => {
-    db.run("DROP TABLE IF EXISTS comments;");
-    db.run("DROP TABLE IF EXISTS comment_votes;");
-    db.run("DROP TABLE IF EXISTS users;");
+server.listen(process.env.PORT || 5000, () => {
+	console.log(`Server running on port ${process.env.PORT || 5000}`);
+	console.log("Please wait while the database is created");
 
-    db.run(User.createUsersTable(), (err) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log("\x1b[34m", "Table users created");
-    });
+	db.serialize(() => {
+		db.run(Comment.dropCommentsTable());
+		db.run(Comment.dropCommentsVotesTable());
+		db.run(User.dropUsersTable());
 
-    db.run(Comment.createCommentsTable(), (err) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log("\x1b[34m", "Table comments created");
-    });
+		db.run(User.createUsersTable(), (err) => {
+			if (err) {
+				console.log(err);
+			}
+			console.log("\x1b[34m", "Table users created");
+		});
 
-    db.run(Comment.createCommentVotesTable(), (err) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log("\x1b[34m", "Table comments_votes created");
-    });
+		db.run(Comment.createCommentsTable(), (err) => {
+			if (err) {
+				console.log(err);
+			}
+			console.log("\x1b[34m", "Table comments created");
+		});
 
-  });
+		db.run(Comment.createCommentVotesTable(), (err) => {
+			if (err) {
+				console.log(err);
+			}
+			console.log("\x1b[34m", "Table comments_votes created");
+		});
+	});
 });
