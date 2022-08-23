@@ -1,3 +1,6 @@
+const path = require("path");
+const { db } = require(path.resolve(__dirname, "./connectDatabase.js"))();
+
 // Create comments table
 const createCommentsTable = () => `
   CREATE TABLE comments (
