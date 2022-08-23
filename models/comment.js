@@ -23,7 +23,15 @@ const createCommentVotesTable = () => `CREATE TABLE comment_votes(
   user_id INTEGER NOT NULL,
   vote_given TEXT NOT NULL
 )`;
+// Drop comments table
+const dropCommentsTable = () => "DROP TABLE IF EXISTS comments;";
+
+// Drop comment votes table
+const dropCommentsVotesTable = () => "DROP TABLE IF EXISTS comment_votes;";
+
 module.exports = {
   createCommentsTable,
   createCommentVotesTable,
+	dropCommentsVotesTable,
+	dropCommentsTable,
 };
