@@ -1,6 +1,6 @@
 const path = require("path");
-const { db } = require(path.resolve(__dirname, "./connectDatabase.js"))();
 
+const Database = require(path.resolve(__dirname, "./Database"));
 // Create comments table
 const createCommentsTable = () => `
   CREATE TABLE comments (
@@ -30,8 +30,17 @@ const dropCommentsTable = () => "DROP TABLE IF EXISTS comments;";
 const dropCommentsVotesTable = () => "DROP TABLE IF EXISTS comment_votes;";
 
 module.exports = {
-  createCommentsTable,
-  createCommentVotesTable,
-	dropCommentsVotesTable,
+	createCommentsTable,
+	createCommentVotesTable,
+	addComment: async function (parameters) {
+		const addCommentResult = await Database.runPreparedStatement(
+			NEW_COMMENT_QUERY,
+			parameters
+		);
+		console.log("addCommentResult", addCommentResult);
+		return addCommentResult;
+	},
+	getAllCommentsQuery,
 	dropCommentsTable,
+	dropCommentsVotesTable,
 };
