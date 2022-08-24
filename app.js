@@ -8,4 +8,6 @@ const commentsRouter = require("./controllers/comments");
 app.use(helmet());
 app.use(express.json());
 
+app.use("/api/comments", commentsRouter);
+
 module.exports = app;
