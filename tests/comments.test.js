@@ -123,6 +123,12 @@ describe('POST "/api/comments"', () => {
 		replyingToComment: 1,
 		replyingToUser: 1,
 	};
+	const VALID_NEW_COMMENT_REQUIRED_FIELDS = {
+		content:
+			"Added by the 'Return the added comment' test. Provides only required fields in the body.",
+		user: 1,
+		createdAt: spy.mock.instances[0],
+	};
 
 	test("Return the correct response when a comment with all fields is added.", async () => {
 		const response = await api
@@ -142,6 +148,15 @@ describe('POST "/api/comments"', () => {
 		);
 	});
 
+	test("When optional values are not provided, they return the correct default value", async () => {
+		const response = await api
+			.post(API_URL)
+			.send(VALID_NEW_COMMENT_REQUIRED_FIELDS)
+			.expect(201)
+			.expect("Content-Type", /application\/json/);
 
+		expect(response.body.replyingToComment).toBeNull();
+		expect(response.body.replyingToUser).toBeNull();
+	});
 
 });
