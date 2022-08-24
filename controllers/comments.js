@@ -29,7 +29,6 @@ commentsRouter.post(
 				newComment.user,
 				newComment.content,
 				new Date(),
-				newComment.score,
 				newComment.replyingToComment,
 				newComment.replyingToUser,
 			]);
