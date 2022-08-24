@@ -109,55 +109,39 @@ describe('GET "/api/comments"', () => {
 });
 
 describe('POST "/api/comments"', () => {
-  const spy = jest.spyOn(global, "Date");
-  const NEW_COMMENT_ALL = {
-    content:
-      "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
-    user: 1,
-    createdAt: spy.mock.instances[0],
-    replyingToComment: 1,
-  };
-  test("Return the added comment", async () => {
-    const response = await api
-      .post(API_URL)
-      .send(NEW_COMMENT_ALL)
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
+	afterEach(() => {
+		// Empty the database after each test
+		db.run(`DELETE FROM comments;`);
+	});
 
-    expect(response.body.content).toEqual(NEW_COMMENT_ALL.content);
-    expect(response.body.user).toEqual(NEW_COMMENT_ALL.user);
-    expect(response.body.createdAt).toEqual(spy.mock.instances[0]); // check we called the correct function
-    expect(response.body.replyingToComment).toEqual(
-      NEW_COMMENT_ALL.replyingToComment
-    );
-  });
+	const spy = jest.spyOn(global, "Date");
+	const VALID_NEW_COMMENT_ALL_FIELDS = {
+		content:
+			"Added by the 'Return the added comment' test. Provides all fields in the body",
+		user: 1,
+		createdAt: spy.mock.instances[0],
+		replyingToComment: 1,
+		replyingToUser: 1,
+	};
 
-  test("Return an error when the content is missing", async () => {
-    const response = await api
-      .post(API_URL)
-      .send({ ...NEW_COMMENT_ALL, content: null })
-      .expect(403)
-      .expect("Content-Type", /application\/json/);
+	test("Return the correct response when a comment with all fields is added.", async () => {
+		const response = await api
+			.post(API_URL)
+			.send(VALID_NEW_COMMENT_ALL_FIELDS)
+			.expect(201)
+			.expect("Content-Type", /application\/json/);
 
-    // expect(response.body).toBe({ error: "missing required field(s)" });
-  });
+		expect(response.body.content).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.content);
+		expect(response.body.user).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.user);
+		expect(response.body.createdAt).toEqual(spy.mock.instances[0]); // check new Date() was called
+		expect(response.body.replyingToComment).toEqual(
+			VALID_NEW_COMMENT_ALL_FIELDS.replyingToComment
+		);
+		expect(response.body.replyingToUser).toEqual(
+			VALID_NEW_COMMENT_ALL_FIELDS.replyingToUser
+		);
+	});
 
-  test("When optional values are not provided, they return the correct default value", async () => {
-    const NEW_COMMENT_REQUIRED_ONLY = {
-      content:
-        "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
-      user: 1,
-    };
-    const response = await api
-      .post(API_URL)
-      .send(NEW_COMMENT_REQUIRED_ONLY)
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
-
-    expect(response.body.score).toEqual(0);
-    expect(response.body.replyingToComment).toEqual(null);
-  });
-});
 
 
 });
