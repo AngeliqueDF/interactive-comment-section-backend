@@ -14,6 +14,12 @@ const commentsRouter = require("express").Router();
  */
 commentsRouter.post(
 	"/",
+	(req, res, next) => {
+		if (!req.body.content) {
+			return res.status(400).json({ error: "Missing required field." });
+		}
+		next();
+	},
 	(req, res) => {
 		const newComment = {
 			user: Number(xss(req.body.user)),
