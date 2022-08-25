@@ -1,6 +1,6 @@
 const path = require("path");
-const { db } = require(path.resolve(__dirname, "./connectDatabase.js"))();
 
+const Database = require(path.resolve(__dirname, "./Database"));
 // Create comments table
 const createCommentsTable = () => `
   CREATE TABLE comments (
@@ -23,6 +23,11 @@ const createCommentVotesTable = () => `CREATE TABLE comment_votes(
   user_id INTEGER NOT NULL,
   vote_given TEXT NOT NULL
 )`;
+/**
+ * Add a new comment
+ */
+const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score,  replyingToComment, replyingToUser) VALUES (?, ?, ?, ?, ?, ?)`;
+
 // Drop comments table
 const dropCommentsTable = () => "DROP TABLE IF EXISTS comments;";
 
@@ -30,8 +35,16 @@ const dropCommentsTable = () => "DROP TABLE IF EXISTS comments;";
 const dropCommentsVotesTable = () => "DROP TABLE IF EXISTS comment_votes;";
 
 module.exports = {
-  createCommentsTable,
-  createCommentVotesTable,
-	dropCommentsVotesTable,
+	createCommentsTable,
+	createCommentVotesTable,
+	insertOne: async function (parameters) {
+		const addCommentResult = await Database.addOne(
+			NEW_COMMENT_QUERY,
+			parameters
+		);
+		return addCommentResult;
+	},
+	getAllCommentsQuery,
 	dropCommentsTable,
+	dropCommentsVotesTable,
 };
