@@ -26,7 +26,7 @@ commentsRouter.post(
 		};
 
 		try {
-			Comment.insertComment([
+			Comment.insertOne([
 				newComment.user,
 				newComment.content,
 				newComment.createdAt,

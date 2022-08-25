@@ -37,7 +37,7 @@ const dropCommentsVotesTable = () => "DROP TABLE IF EXISTS comment_votes;";
 module.exports = {
 	createCommentsTable,
 	createCommentVotesTable,
-	insertComment: async function (parameters) {
+	insertOne: async function (parameters) {
 		const addCommentResult = await Database.addOne(
 			NEW_COMMENT_QUERY,
 			parameters
