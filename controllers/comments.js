@@ -26,7 +26,7 @@ commentsRouter.post(
 		};
 
 		try {
-			const addedComment = await Comment.addComment([
+			Comment.insertComment([
 				newComment.user,
 				newComment.content,
 				newComment.createdAt,
