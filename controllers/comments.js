@@ -20,6 +20,7 @@ commentsRouter.post(
 		const newComment = {
 			user: Number(xss(req.body.user)),
 			content: xss(req.body.content),
+			createdAt: new Date(),
 			replyingToUser: Number(xss(req.body.replyingToUser)) || null,
 			replyingToComment: Number(xss(req.body.replyingToComment)) || null,
 		};
@@ -28,7 +29,7 @@ commentsRouter.post(
 			const addedComment = await Comment.addComment([
 				newComment.user,
 				newComment.content,
-				new Date(),
+				newComment.createdAt,
 				newComment.replyingToComment,
 				newComment.replyingToUser,
 			]);
