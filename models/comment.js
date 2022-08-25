@@ -23,6 +23,11 @@ const createCommentVotesTable = () => `CREATE TABLE comment_votes(
   user_id INTEGER NOT NULL,
   vote_given TEXT NOT NULL
 )`;
+/**
+ * Add a new comment
+ */
+const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score,  replyingToComment, replyingToUser) VALUES (?, ?, ?, ?, ?, ?)`;
+
 // Drop comments table
 const dropCommentsTable = () => "DROP TABLE IF EXISTS comments;";
 
