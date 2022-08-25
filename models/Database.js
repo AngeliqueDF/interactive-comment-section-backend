@@ -19,6 +19,5 @@ function runQuery(sqlQuery) {
 }
 
 module.exports = {
-	runPreparedStatement,
 	addOne: runPreparedStatement,
 };
