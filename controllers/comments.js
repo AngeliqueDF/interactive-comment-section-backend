@@ -33,7 +33,6 @@ commentsRouter.post(
 				newComment.replyingToComment,
 				newComment.replyingToUser,
 			]);
-			console.log(addedComment);
 		} catch (err) {
 			console.log(err);
 			return res
