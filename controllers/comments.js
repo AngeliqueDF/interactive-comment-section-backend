@@ -33,6 +33,7 @@ commentsRouter.post(
 				newComment.replyingToComment,
 				newComment.replyingToUser,
 			]);
+			res.status(201).json({ ...newComment, score: 0 });
 		} catch (err) {
 			console.log(err);
 			return res
