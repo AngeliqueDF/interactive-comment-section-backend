@@ -17,25 +17,6 @@ afterEach(() => {
 });
 
 describe('GET "/api/comments"', () => {
-  // ARRANGE
-  beforeEach(async () => {
-    // console.log("Adding comments to the database");
-    const addCommentsQuery = `INSERT INTO comments (content, createdAt, score, user, replyingToComment) VALUES(?,?,?,?,?)`;
-    const statement = db.prepare(addCommentsQuery);
-
-    for (let i = 0; i < INITIAL_COMMENTS.length; i++) {
-      statement.run([
-        INITIAL_COMMENTS[i].content,
-        new Date(),
-        INITIAL_COMMENTS[i].score,
-        INITIAL_COMMENTS[i].user.username,
-        INITIAL_COMMENTS[i].replyingTo,
-      ]);
-    }
-
-    await new Promise((res) => setTimeout(res, 1000));
-  });
-  // END ARRANGE
   test("Returns all comments in the database", async () => {
     const response = await api
       .get(API_URL)
@@ -77,6 +58,24 @@ describe('GET "/api/comments"', () => {
 			replyingTo: "ramsesmiron",
 		},
 	];
+
+	beforeEach(() => {
+		// add
+		INITIAL_COMMENTS.forEach(async (comment) => {
+			try {
+				const addedComment = await Comment.insertOne([
+					comment.user,
+					comment.content,
+					comment.createdAt,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+	});
 
 });
 
