@@ -1,8 +1,4 @@
 const path = require("path");
-const { db } = require(path.resolve(
-	__dirname,
-	"./../models/connectDatabase"
-))();
 const Comment = require(path.resolve(__dirname, "./../models/comment"));
 
 const xss = require("xss");
@@ -20,7 +16,7 @@ commentsRouter.post(
 		}
 		next();
 	},
-	(req, res) => {
+	async (req, res) => {
 		const newComment = {
 			user: Number(xss(req.body.user)),
 			content: xss(req.body.content),
@@ -28,28 +24,24 @@ commentsRouter.post(
 			replyingToUser: Number(xss(req.body.replyingToUser)) || null,
 			replyingToComment: Number(xss(req.body.replyingToComment)) || null,
 		};
-		const statement = db.prepare(Comment.newComment());
 
-		statement.run(
-			[
+		try {
+			Comment.insertOne([
 				newComment.user,
 				newComment.content,
-				new Date(),
-				newComment.score,
+				newComment.createdAt,
 				newComment.replyingToComment,
 				newComment.replyingToUser,
-			],
-			(err) => {
-				if (err) {
-					console.log(err);
-					return res
-						.status(500)
-						.json({ error: "There was an error. Please try again later." });
-				}
-				res.status(201).json({ ...newComment });
-			}
-		);
+			]);
+			res.status(201).json({ ...newComment, score: 0 });
+		} catch (err) {
+			console.log(err);
+			return res
+				.status(500)
+				.json({ error: "Could not add this comment. Please try again later" });
+		}
 	}
 );
+
 
 module.exports = commentsRouter;
