@@ -11,11 +11,6 @@ const Comment = require(path.resolve(__dirname, "./../models/comment"));
 
 const API_URL = "/api/comments";
 
-
-afterEach(() => {
-  db.run(`DELETE FROM comments;`);
-});
-
 describe('GET "/api/comments"', () => {
   test("Returns all comments in the database", async () => {
     const response = await api
@@ -76,6 +71,11 @@ describe('GET "/api/comments"', () => {
 			}
 		});
 	});
+
+	afterEach(() => {
+		db.run(`DELETE FROM comments;`);
+	});
+	// End arrange
 
 });
 
