@@ -12,14 +12,6 @@ const Comment = require(path.resolve(__dirname, "./../models/comment"));
 const API_URL = "/api/comments";
 
 describe('GET "/api/comments"', () => {
-  test("Returns all comments in the database", async () => {
-    const response = await api
-      .get(API_URL)
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
-
-    expect(response.body).toHaveLength(INITIAL_COMMENTS.length);
-  });
 	// ARRANGE
 	const INITIAL_COMMENTS = [
 		{
@@ -77,6 +69,14 @@ describe('GET "/api/comments"', () => {
 	});
 	// End arrange
 
+	test("Returns all comments in the database", async () => {
+		const response = await api
+			.get(API_URL)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body).toHaveLength(INITIAL_COMMENTS.length);
+	});
 });
 
 describe('POST "/api/comments"', () => {
