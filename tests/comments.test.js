@@ -1,7 +1,8 @@
 const path = require("path");
-const { db } = require(path.resolve(__dirname, "./../models/connectDatabase"))(
-	"./../models/tdd-tests-database.sqlite"
-);
+const db = require(path.resolve(
+	__dirname,
+	"./../models/DatabaseConnection"
+)).connectDatabase();
 
 const supertest = require("supertest");
 const app = require("../app");
