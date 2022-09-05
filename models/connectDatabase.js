@@ -1,21 +1,32 @@
+/**
+ * Connects to the database specified in databasePath.
+ * If the value isn't defined, databasePath's value is determined using process.env.NODE_ENV environment variable.
+ */
+
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
-/**
- * Connect to the correct .sqlite database depending on the current environment, and whether a database filename was provided.
- * @param {string} databasePath
- */
-module.exports = function DatabaseConnection(
-	databasePath = process.env.NODE_ENV === "development" ||
-	process.env.NODE_ENV === "production"
-		? "./database.sqlite"
-		: "./tdd-tests-database.sqlite"
-) {
-	return {
-		db: new sqlite3.Database(path.resolve(__dirname, databasePath), (err) => {
-			if (err) {
-				console.log(err);
-			}
-		}),
+const setDatabasePath = (customPath) => {
+	if (customPath) return customPath;
+
+	const ENVIRONMENTS_MAP = {
+		production: "database.sqlite",
+		development: "development-database.sqlite",
+		util: "util-database.sqlite",
 	};
+
+	return ENVIRONMENTS_MAP[process.env.NODE_ENV];
+};
+
+function connectDatabase(DATABASE_PATH) {
+	const databasePath = setDatabasePath(DATABASE_PATH);
+	return new sqlite3.Database(path.resolve(__dirname, databasePath), (err) => {
+		if (err) {
+			console.log(err);
+		}
+	});
+}
+
+module.exports = {
+	connectDatabase,
 };
