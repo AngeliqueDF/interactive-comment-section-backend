@@ -1,8 +1,4 @@
 const path = require("path");
-const db = require(path.resolve(
-	__dirname,
-	"./../../../models/connectUtilsTestDatabase.js"
-))();
 
 console.log("Adding a sample comment to the database");
 
