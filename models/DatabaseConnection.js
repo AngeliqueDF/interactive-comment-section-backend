@@ -1,3 +1,4 @@
+// TODO rename to DatabaseConnection
 /**
  * Connects to the database specified in databasePath.
  * If the value isn't defined, databasePath's value is determined using process.env.NODE_ENV environment variable.
