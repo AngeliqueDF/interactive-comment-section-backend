@@ -1,9 +1,5 @@
 const path = require("path");
 
-const db = require(path.resolve(
-	__dirname,
-	"./../../../models/connectUtilsTestDatabase.js"
-))();
 const Comment = require("./../../../models/comment");
 
 db.all(Comment.getAllComments(), (err, rows) => {
