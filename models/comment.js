@@ -1,6 +1,6 @@
 const path = require("path");
+const Database = require(path.resolve(__dirname, "./DatabaseQueryRunner"));
 
-const Database = require(path.resolve(__dirname, "./Database"));
 // Create comments table
 const createCommentsTable = () => `
   CREATE TABLE comments (
