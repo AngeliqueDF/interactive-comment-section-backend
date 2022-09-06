@@ -18,6 +18,37 @@ function checkMissingContent(req, res, next) {
 	next();
 }
 
+/**
+ * Sanitizes input and inserts a comment in the database.
+ */
+async function insertComment(req, res, next) {
+	const newComment = {
+		user: Number(xss(req.body.user)),
+		content: xss(req.body.content),
+		score: 0,
+		createdAt: new Date(),
+		replyingToUser: Number(xss(req.body.replyingToUser)) || null,
+		replyingToComment: Number(xss(req.body.replyingToComment)) || null,
+	};
+
+	CommentModel.insertOne([
+		newComment.user,
+		newComment.content,
+		newComment.createdAt,
+		newComment.score,
+		newComment.replyingToComment,
+		newComment.replyingToUser,
+	])
+		.then((newCommentID) => {
+			req.body.newComment = { id: newCommentID, ...newComment };
+			next();
+		})
+		.catch((error) => {
+			console.trace(error);
+			next(error);
+		});
+}
+
 module.exports = {
 	checkMissingContent,
 };
