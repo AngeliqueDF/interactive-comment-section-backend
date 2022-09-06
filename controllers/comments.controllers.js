@@ -6,6 +6,8 @@ const CommentModel = require(path.resolve(__dirname, "./../models/comment"));
 // Strips dangerous characters from data sent by clients.
 const xss = require("xss");
 
+const helper = require("./../utils/helper");
+
 /**
  * Checks the content property is defined in a request body.
  */
@@ -50,7 +52,30 @@ async function insertComment(req, res, next) {
 		});
 }
 
+function setRootComment(req, res, next) {
+	if (
+		req.body.newComment.replyingToComment === null &&
+		req.body.newComment.replyingToUser === null
+	) {
+		next();
+	}
+
+	// Find the id of the root comment with recursion
+	const rootCommentID = helper.findRootComment(
+		req.body.allComments,
+		req.body.newComment.id
+	);
+
+	req.body.newComment = {
+		...req.body.newComment,
+		replyingToComment: rootCommentID,
+	};
+
+	next();
+}
+
 module.exports = {
 	checkMissingContent,
 	insertComment,
+	setRootComment,
 };
