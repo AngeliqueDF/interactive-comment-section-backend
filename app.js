@@ -3,7 +3,7 @@ const app = express();
 
 const helmet = require("helmet");
 
-const commentsRouter = require("./controllers/comments");
+const commentsRouter = require("./controllers/comments.routes");
 
 app.use(helmet());
 app.use(express.json());
