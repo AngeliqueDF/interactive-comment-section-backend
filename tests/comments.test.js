@@ -131,11 +131,12 @@ describe('POST "/api/comments"', () => {
 		expect(response.body.replyingToUser).toBeNull();
 	});
 
-	test("Return an error when the content is missing", async () => {
+	test("Return an error response when the content is missing", async () => {
 		const response = await api
 			.post(API_URL)
 			.send({ ...VALID_NEW_COMMENT_ALL_FIELDS, content: null })
 			.expect(400)
 			.expect("Content-Type", /application\/json/);
+		expect(response.body.error).toBe("Missing required field(s).");
 	});
 });
