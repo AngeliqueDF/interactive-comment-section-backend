@@ -10,7 +10,7 @@ const xss = require("xss");
  * Checks the content property is defined in a request body.
  */
 function checkMissingContent(req, res, next) {
-	if (!req.body.content) {
+	if (!req.body.newComment.content) {
 		const err = new Error();
 		err.name = "MissingRequiredField";
 		next(err);
