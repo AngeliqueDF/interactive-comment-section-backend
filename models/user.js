@@ -1,10 +1,10 @@
-const createUsersTable = () => `CREATE TABLE users (
+const CREATE_USERS_TABLE_QUERY = `CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
     png TEXT,
     webp TEXT
   );`;
 
-const dropUsersTable = () => "DROP TABLE IF EXISTS users;";
+const DROP_USERS_TABLE_QUERY = "DROP TABLE IF EXISTS users;";
 
-module.exports = { dropUsersTable, createUsersTable };
+module.exports = { DROP_USERS_TABLE_QUERY, CREATE_USERS_TABLE_QUERY };
