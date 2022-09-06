@@ -14,6 +14,7 @@ const setDatabasePath = (customPath) => {
 		production: "database.sqlite",
 		development: "development-database.sqlite",
 		util: "util-database.sqlite",
+		test: "tdd-tests-database.sqlite",
 	};
 
 	return ENVIRONMENTS_MAP[process.env.NODE_ENV];
