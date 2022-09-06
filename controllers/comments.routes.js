@@ -9,6 +9,7 @@ CommentsRouter.post(
 	"/",
 	CommentController.checkMissingContent,
 	CommentController.insertComment,
+	CommentController.setRootComment,
 	(req, res) => {
 		res.status(201).json(req.body.newComment);
 	}
