@@ -90,9 +90,8 @@ describe.only('POST "/api/comments"', () => {
 	});
 
 	const VALID_NEW_COMMENT_ALL_FIELDS = {
-		content:
-			"Added by the 'Return the added comment' test. Provides all fields in the body",
-		user: 1,
+		content: "A new comment with all fields.",
+		user: 2,
 		replyingToComment: 1,
 		replyingToUser: 1,
 	};
@@ -103,9 +102,14 @@ describe.only('POST "/api/comments"', () => {
 	};
 
 	test("Return the correct response when a comment with all fields is added.", async () => {
+		const sampleState = [{ id: 1, content: "Comment in the state.", user: 1 }];
+
 		const response = await api
 			.post(API_URL)
-			.send(VALID_NEW_COMMENT_ALL_FIELDS)
+			.send({
+				allComments: sampleState,
+				newComment: VALID_NEW_COMMENT_ALL_FIELDS,
+			})
 			.expect(201)
 			.expect("Content-Type", /application\/json/);
 
