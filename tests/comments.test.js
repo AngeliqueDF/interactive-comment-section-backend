@@ -96,8 +96,7 @@ describe.only('POST "/api/comments"', () => {
 		replyingToUser: 1,
 	};
 	const VALID_NEW_COMMENT_REQUIRED_FIELDS = {
-		content:
-			"Added by the 'Return the added comment' test. Provides only required fields in the body.",
+		content: "A new comment without optional fields.",
 		user: 1,
 	};
 
@@ -162,7 +161,7 @@ describe.only('POST "/api/comments"', () => {
 	test("When optional values are not provided, they return the correct default value", async () => {
 		const response = await api
 			.post(API_URL)
-			.send(VALID_NEW_COMMENT_REQUIRED_FIELDS)
+			.send({ newComment: VALID_NEW_COMMENT_REQUIRED_FIELDS })
 			.expect(201)
 			.expect("Content-Type", /application\/json/);
 
