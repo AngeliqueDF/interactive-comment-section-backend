@@ -11,7 +11,9 @@ const xss = require("xss");
  */
 function checkMissingContent(req, res, next) {
 	if (!req.body.content) {
-		return res.status(400).json({ error: "Missing required field." });
+		const err = new Error();
+		err.name = "MissingRequiredField";
+		next(err);
 	}
 	next();
 }
