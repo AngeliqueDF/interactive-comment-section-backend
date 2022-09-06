@@ -23,12 +23,13 @@ function checkMissingContent(req, res, next) {
  */
 async function insertComment(req, res, next) {
 	const newComment = {
-		user: Number(xss(req.body.user)),
-		content: xss(req.body.content),
+		user: Number(xss(req.body.newComment.user)),
+		content: xss(req.body.newComment.content),
 		score: 0,
 		createdAt: new Date(),
-		replyingToUser: Number(xss(req.body.replyingToUser)) || null,
-		replyingToComment: Number(xss(req.body.replyingToComment)) || null,
+		replyingToUser: Number(xss(req.body.newComment.replyingToUser)) || null,
+		replyingToComment:
+			Number(xss(req.body.newComment.replyingToComment)) || null,
 	};
 
 	CommentModel.insertOne([
@@ -51,4 +52,5 @@ async function insertComment(req, res, next) {
 
 module.exports = {
 	checkMissingContent,
+	insertComment,
 };
