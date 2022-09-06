@@ -90,22 +90,25 @@ describe.only('POST "/api/comments"', () => {
 	});
 
 	const VALID_NEW_COMMENT_ALL_FIELDS = {
-		content:
-			"Added by the 'Return the added comment' test. Provides all fields in the body",
-		user: 1,
+		content: "A new comment with all fields.",
+		user: 2,
 		replyingToComment: 1,
 		replyingToUser: 1,
 	};
 	const VALID_NEW_COMMENT_REQUIRED_FIELDS = {
-		content:
-			"Added by the 'Return the added comment' test. Provides only required fields in the body.",
+		content: "A new comment without optional fields.",
 		user: 1,
 	};
 
 	test("Return the correct response when a comment with all fields is added.", async () => {
+		const sampleState = [{ id: 1, content: "Comment in the state.", user: 1 }];
+
 		const response = await api
 			.post(API_URL)
-			.send(VALID_NEW_COMMENT_ALL_FIELDS)
+			.send({
+				allComments: sampleState,
+				newComment: VALID_NEW_COMMENT_ALL_FIELDS,
+			})
 			.expect(201)
 			.expect("Content-Type", /application\/json/);
 
@@ -121,10 +124,44 @@ describe.only('POST "/api/comments"', () => {
 		);
 	});
 
+	test("Returns the correct value for replyingToComment.", async () => {
+		const DATA = [
+			{
+				id: 1,
+				content: "first comment",
+				user: 1,
+			},
+			{
+				id: 2,
+				content: "second comment",
+				user: 2,
+				replyingToComment: 1,
+				replyingToUser: 1,
+			},
+		];
+
+		const response = await api
+			.post(API_URL)
+			.send({
+				allComments: DATA,
+				newComment: {
+					content: "Replies to comment 2, but its root comment's id is 1.",
+					user: 1,
+					replyingToComment: 2,
+					replyingToUser: 2,
+				},
+			})
+			.expect(201)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body.replyingToComment).toBe(1);
+		expect(response.body.replyingToUser).toBe(2);
+	});
+
 	test("When optional values are not provided, they return the correct default value", async () => {
 		const response = await api
 			.post(API_URL)
-			.send(VALID_NEW_COMMENT_REQUIRED_FIELDS)
+			.send({ newComment: VALID_NEW_COMMENT_REQUIRED_FIELDS })
 			.expect(201)
 			.expect("Content-Type", /application\/json/);
 
@@ -135,7 +172,7 @@ describe.only('POST "/api/comments"', () => {
 	test("Return an error response when the content is missing", async () => {
 		const response = await api
 			.post(API_URL)
-			.send({ ...VALID_NEW_COMMENT_ALL_FIELDS, content: null })
+			.send({ newComment: { ...VALID_NEW_COMMENT_ALL_FIELDS, content: null } })
 			.expect(400)
 			.expect("Content-Type", /application\/json/);
 		expect(response.body.error).toBe("Missing required field(s).");
