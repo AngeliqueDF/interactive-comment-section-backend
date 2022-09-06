@@ -2,7 +2,7 @@ const path = require("path");
 const Database = require(path.resolve(__dirname, "./DatabaseQueryRunner"));
 
 // Create comments table
-const createCommentsTable = () => `
+const CREATE_COMMENTS_TABLE_QUERY = `
   CREATE TABLE comments (
     id INTEGER PRIMARY KEY,
     content TEXT NOT NULL,
@@ -17,7 +17,7 @@ const createCommentsTable = () => `
   );`;
 
 // Create comments votes table
-const createCommentVotesTable = () => `CREATE TABLE comment_votes(
+const CREATE_COMMENT_VOTES_TABLE_QUERY = `CREATE TABLE comment_votes(
   id INTEGER PRIMARY KEY,
   comment_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
@@ -29,14 +29,14 @@ const createCommentVotesTable = () => `CREATE TABLE comment_votes(
 const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score,  replyingToComment, replyingToUser) VALUES (?, ?, ?, ?, ?, ?)`;
 
 // Drop comments table
-const dropCommentsTable = () => "DROP TABLE IF EXISTS comments;";
+const DROP_COMMENTS_TABLE_QUERY = "DROP TABLE IF EXISTS comments;";
 
 // Drop comment votes table
-const dropCommentsVotesTable = () => "DROP TABLE IF EXISTS comment_votes;";
+const DROP_COMMENT_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comment_votes;";
 
 module.exports = {
-	createCommentsTable,
-	createCommentVotesTable,
+	CREATE_COMMENTS_TABLE_QUERY,
+	CREATE_COMMENT_VOTES_TABLE_QUERY,
 	insertOne: async function (parameters) {
 		const addCommentResult = await Database.addOne(
 			NEW_COMMENT_QUERY,
@@ -44,7 +44,6 @@ module.exports = {
 		);
 		return addCommentResult;
 	},
-	getAllCommentsQuery,
-	dropCommentsTable,
-	dropCommentsVotesTable,
+	DROP_COMMENTS_TABLE_QUERY,
+	DROP_COMMENT_VOTES_TABLE_QUERY,
 };
