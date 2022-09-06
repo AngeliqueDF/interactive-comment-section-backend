@@ -124,7 +124,7 @@ describe.only('POST "/api/comments"', () => {
 		);
 	});
 
-	test.only("Returns the correct value for replyingToComment.", async () => {
+	test("Returns the correct value for replyingToComment.", async () => {
 		const DATA = [
 			{
 				id: 1,
