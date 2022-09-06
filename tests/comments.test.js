@@ -121,6 +121,40 @@ describe.only('POST "/api/comments"', () => {
 		);
 	});
 
+	test.only("Returns the correct value for replyingToComment.", async () => {
+		const DATA = [
+			{
+				id: 1,
+				content: "first comment",
+				user: 1,
+			},
+			{
+				id: 2,
+				content: "second comment",
+				user: 2,
+				replyingToComment: 1,
+				replyingToUser: 1,
+			},
+		];
+
+		const response = await api
+			.post(API_URL)
+			.send({
+				allComments: DATA,
+				newComment: {
+					content: "Replies to comment 2, but its root comment's id is 1.",
+					user: 1,
+					replyingToComment: 2,
+					replyingToUser: 2,
+				},
+			})
+			.expect(201)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body.replyingToComment).toBe(1);
+		expect(response.body.replyingToUser).toBe(2);
+	});
+
 	test("When optional values are not provided, they return the correct default value", async () => {
 		const response = await api
 			.post(API_URL)
