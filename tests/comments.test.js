@@ -111,7 +111,8 @@ describe.only('POST "/api/comments"', () => {
 
 		expect(response.body.content).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.content);
 		expect(response.body.user).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.user);
-		expect(response.body.createdAt).toEqual(spy.mock.instances[0]); // check new Date() was called
+		expect(response.body.createdAt).toBeDefined();
+		expect(spy).toHaveBeenCalled(); // Check new Date() was called. createdAt will evaluate to '[object Object]' in the database, and mockConstructor {} in the response body. Which is normal because the Date constructor is being mocked.
 		expect(response.body.replyingToComment).toEqual(
 			VALID_NEW_COMMENT_ALL_FIELDS.replyingToComment
 		);
