@@ -1,8 +1,8 @@
 const path = require("path");
-const { db } = require(path.resolve(
+const db = require(path.resolve(
 	__dirname,
-	"./models/connectDatabase.js"
-))();
+	"./models/DatabaseConnection"
+)).connectDatabase();
 
 const Comment = require("./models/comment");
 const User = require("./models/user");
