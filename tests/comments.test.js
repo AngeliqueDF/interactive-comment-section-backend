@@ -83,7 +83,7 @@ describe('GET "/api/comments"', () => {
 	});
 });
 
-describe('POST "/api/comments"', () => {
+describe.only('POST "/api/comments"', () => {
 	afterEach(() => {
 		// Empty the database after each test
 		db.run(`DELETE FROM comments;`);
@@ -93,7 +93,6 @@ describe('POST "/api/comments"', () => {
 		content:
 			"Added by the 'Return the added comment' test. Provides all fields in the body",
 		user: 1,
-		createdAt: spy.mock.instances[0],
 		replyingToComment: 1,
 		replyingToUser: 1,
 	};
@@ -101,7 +100,6 @@ describe('POST "/api/comments"', () => {
 		content:
 			"Added by the 'Return the added comment' test. Provides only required fields in the body.",
 		user: 1,
-		createdAt: spy.mock.instances[0],
 	};
 
 	test("Return the correct response when a comment with all fields is added.", async () => {
