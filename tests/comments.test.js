@@ -1,7 +1,8 @@
 const path = require("path");
-const { db } = require(path.resolve(__dirname, "./../models/connectDatabase"))(
-	"./../models/tdd-tests-database.sqlite"
-);
+const db = require(path.resolve(
+	__dirname,
+	"./../models/DatabaseConnection"
+)).connectDatabase();
 
 const supertest = require("supertest");
 const app = require("../app");
@@ -10,6 +11,9 @@ const api = supertest(app);
 const Comment = require(path.resolve(__dirname, "./../models/comment"));
 
 const API_URL = "/api/comments";
+
+// Mock the Date object. Will be used to check an instance of Date was created
+const spy = jest.spyOn(global, "Date");
 
 describe('GET "/api/comments"', () => {
 	// ARRANGE
@@ -79,18 +83,16 @@ describe('GET "/api/comments"', () => {
 	});
 });
 
-describe('POST "/api/comments"', () => {
+describe.only('POST "/api/comments"', () => {
 	afterEach(() => {
 		// Empty the database after each test
 		db.run(`DELETE FROM comments;`);
 	});
 
-	const spy = jest.spyOn(global, "Date");
 	const VALID_NEW_COMMENT_ALL_FIELDS = {
 		content:
 			"Added by the 'Return the added comment' test. Provides all fields in the body",
 		user: 1,
-		createdAt: spy.mock.instances[0],
 		replyingToComment: 1,
 		replyingToUser: 1,
 	};
@@ -98,7 +100,6 @@ describe('POST "/api/comments"', () => {
 		content:
 			"Added by the 'Return the added comment' test. Provides only required fields in the body.",
 		user: 1,
-		createdAt: spy.mock.instances[0],
 	};
 
 	test("Return the correct response when a comment with all fields is added.", async () => {
@@ -110,7 +111,8 @@ describe('POST "/api/comments"', () => {
 
 		expect(response.body.content).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.content);
 		expect(response.body.user).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.user);
-		expect(response.body.createdAt).toEqual(spy.mock.instances[0]); // check new Date() was called
+		expect(response.body.createdAt).toBeDefined();
+		expect(spy).toHaveBeenCalled(); // Check new Date() was called. createdAt will evaluate to '[object Object]' in the database, and mockConstructor {} in the response body. Which is normal because the Date constructor is being mocked.
 		expect(response.body.replyingToComment).toEqual(
 			VALID_NEW_COMMENT_ALL_FIELDS.replyingToComment
 		);
@@ -130,11 +132,12 @@ describe('POST "/api/comments"', () => {
 		expect(response.body.replyingToUser).toBeNull();
 	});
 
-	test("Return an error when the content is missing", async () => {
+	test("Return an error response when the content is missing", async () => {
 		const response = await api
 			.post(API_URL)
 			.send({ ...VALID_NEW_COMMENT_ALL_FIELDS, content: null })
 			.expect(400)
 			.expect("Content-Type", /application\/json/);
+		expect(response.body.error).toBe("Missing required field(s).");
 	});
 });
