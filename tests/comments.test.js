@@ -83,7 +83,9 @@ describe('GET "/api/comments"', () => {
 	});
 });
 
-describe.only('POST "/api/comments"', () => {
+describe.only('POST "/api/comments/newComment"', () => {
+	const ROUTE = API_URL + "/newComment";
+
 	afterEach(() => {
 		// Empty the database after each test
 		db.run(`DELETE FROM comments;`);
