@@ -91,15 +91,9 @@ describe.only('POST "/api/comments/newComment"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
-	const VALID_NEW_COMMENT_ALL_FIELDS = {
+	const VALID_NEW_COMMENT = {
 		content: "A new comment with all fields.",
 		user: 2,
-		replyingToComment: 1,
-		replyingToUser: 1,
-	};
-	const VALID_NEW_COMMENT_REQUIRED_FIELDS = {
-		content: "A new comment without optional fields.",
-		user: 1,
 	};
 
 	test("Return the correct response when a comment with all fields is added.", async () => {
