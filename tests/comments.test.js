@@ -123,6 +123,15 @@ describe.only('POST "/api/comments/newComment"', () => {
 	});
 });
 
+describe.only('POST "/api/comments/newReply"', () => {
+	const ROUTE = API_URL + "/newReply";
+
+	afterEach(() => {
+		// Empty the database after each test
+		db.run(`DELETE FROM comments;`);
+	});
+
+	test("Returns the correct information on the comment getting replied to .", async () => {
 		const DATA = [
 			{
 				id: 1,
@@ -139,7 +148,7 @@ describe.only('POST "/api/comments/newComment"', () => {
 		];
 
 		const response = await api
-			.post(API_URL)
+			.post(ROUTE)
 			.send({
 				allComments: DATA,
 				newComment: {
