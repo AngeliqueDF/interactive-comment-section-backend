@@ -113,7 +113,16 @@ describe.only('POST "/api/comments/newComment"', () => {
 		expect(response.body.replyingToUser).toBeNull();
 	});
 
-	test("Returns the correct value for replyingToComment.", async () => {
+	test("Return an error response when the content is missing", async () => {
+		const response = await api
+			.post(ROUTE)
+			.send({ newComment: { user: 1 } })
+			.expect(400)
+			.expect("Content-Type", /application\/json/);
+		expect(response.body.error).toBe("Missing required field(s).");
+	});
+});
+
 		const DATA = [
 			{
 				id: 1,
@@ -145,13 +154,5 @@ describe.only('POST "/api/comments/newComment"', () => {
 
 		expect(response.body.replyingToComment).toBe(1);
 		expect(response.body.replyingToUser).toBe(2);
-	});
-	test("Return an error response when the content is missing", async () => {
-		const response = await api
-			.post(API_URL)
-			.send({ newComment: { ...VALID_NEW_COMMENT_ALL_FIELDS, content: null } })
-			.expect(400)
-			.expect("Content-Type", /application\/json/);
-		expect(response.body.error).toBe("Missing required field(s).");
 	});
 });
