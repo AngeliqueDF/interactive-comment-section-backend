@@ -83,48 +83,55 @@ describe('GET "/api/comments"', () => {
 	});
 });
 
-describe.only('POST "/api/comments"', () => {
+describe.only('POST "/api/comments/newComment"', () => {
+	const ROUTE = API_URL + "/newComment";
+
 	afterEach(() => {
 		// Empty the database after each test
 		db.run(`DELETE FROM comments;`);
 	});
 
-	const VALID_NEW_COMMENT_ALL_FIELDS = {
+	const VALID_NEW_COMMENT = {
 		content: "A new comment with all fields.",
 		user: 2,
-		replyingToComment: 1,
-		replyingToUser: 1,
-	};
-	const VALID_NEW_COMMENT_REQUIRED_FIELDS = {
-		content: "A new comment without optional fields.",
-		user: 1,
 	};
 
-	test("Return the correct response when a comment with all fields is added.", async () => {
-		const sampleState = [{ id: 1, content: "Comment in the state.", user: 1 }];
-
+	test("Return the correct response when all required fields are provided.", async () => {
 		const response = await api
-			.post(API_URL)
+			.post(ROUTE)
 			.send({
-				allComments: sampleState,
-				newComment: VALID_NEW_COMMENT_ALL_FIELDS,
+				newComment: VALID_NEW_COMMENT,
 			})
 			.expect(201)
 			.expect("Content-Type", /application\/json/);
 
-		expect(response.body.content).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.content);
-		expect(response.body.user).toEqual(VALID_NEW_COMMENT_ALL_FIELDS.user);
+		expect(response.body.content).toEqual(VALID_NEW_COMMENT.content);
+		expect(response.body.user).toEqual(VALID_NEW_COMMENT.user);
 		expect(response.body.createdAt).toBeDefined();
 		expect(spy).toHaveBeenCalled(); // Check new Date() was called. createdAt will evaluate to '[object Object]' in the database, and mockConstructor {} in the response body. Which is normal because the Date constructor is being mocked.
-		expect(response.body.replyingToComment).toEqual(
-			VALID_NEW_COMMENT_ALL_FIELDS.replyingToComment
-		);
-		expect(response.body.replyingToUser).toEqual(
-			VALID_NEW_COMMENT_ALL_FIELDS.replyingToUser
-		);
+		expect(response.body.replyingToComment).toBeNull();
+		expect(response.body.replyingToUser).toBeNull();
 	});
 
-	test("Returns the correct value for replyingToComment.", async () => {
+	test("Return an error response when the content is missing", async () => {
+		const response = await api
+			.post(ROUTE)
+			.send({ newComment: { user: 1 } })
+			.expect(400)
+			.expect("Content-Type", /application\/json/);
+		expect(response.body.error).toBe("Missing required field(s).");
+	});
+});
+
+describe.only('POST "/api/comments/newReply"', () => {
+	const ROUTE = API_URL + "/newReply";
+
+	afterEach(() => {
+		// Empty the database after each test
+		db.run(`DELETE FROM comments;`);
+	});
+
+	test("Returns the correct information on the comment getting replied to .", async () => {
 		const DATA = [
 			{
 				id: 1,
@@ -141,7 +148,7 @@ describe.only('POST "/api/comments"', () => {
 		];
 
 		const response = await api
-			.post(API_URL)
+			.post(ROUTE)
 			.send({
 				allComments: DATA,
 				newComment: {
@@ -156,25 +163,5 @@ describe.only('POST "/api/comments"', () => {
 
 		expect(response.body.replyingToComment).toBe(1);
 		expect(response.body.replyingToUser).toBe(2);
-	});
-
-	test("When optional values are not provided, they return the correct default value", async () => {
-		const response = await api
-			.post(API_URL)
-			.send({ newComment: VALID_NEW_COMMENT_REQUIRED_FIELDS })
-			.expect(201)
-			.expect("Content-Type", /application\/json/);
-
-		expect(response.body.replyingToComment).toBeNull();
-		expect(response.body.replyingToUser).toBeNull();
-	});
-
-	test("Return an error response when the content is missing", async () => {
-		const response = await api
-			.post(API_URL)
-			.send({ newComment: { ...VALID_NEW_COMMENT_ALL_FIELDS, content: null } })
-			.expect(400)
-			.expect("Content-Type", /application\/json/);
-		expect(response.body.error).toBe("Missing required field(s).");
 	});
 });
