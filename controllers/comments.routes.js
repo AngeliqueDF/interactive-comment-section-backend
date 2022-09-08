@@ -6,8 +6,17 @@ const CommentController = require("./comments.controllers");
  * Add a new comment
  */
 CommentsRouter.post(
-	"/",
+	"/newComment",
 	CommentController.checkMissingContent,
+	CommentController.insertComment,
+	(req, res) => {
+		res.status(201).json(req.body.newComment);
+	}
+);
+
+CommentsRouter.post(
+	"/newReply",
+	CommentController.checkEmptyReply,
 	CommentController.insertComment,
 	CommentController.setRootComment,
 	(req, res) => {

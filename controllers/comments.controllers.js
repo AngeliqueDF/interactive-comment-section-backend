@@ -21,6 +21,28 @@ function checkMissingContent(req, res, next) {
 }
 
 /**
+ * Checks the content property is defined in a request body.
+ */
+function checkEmptyReply(req, res, next) {
+	try {
+		const trimmedContent = helper.trimContent(
+			req.body.newComment.replyingToAuthor,
+			req.body.newComment.content
+		);
+
+		if (!trimmedContent) {
+			const err = new Error();
+			err.name = "MissingRequiredField";
+			next(err);
+		}
+		req.body.newComment.content = trimmedContent;
+		next();
+	} catch (error) {
+		next(error);
+	}
+}
+
+/**
  * Sanitizes input and inserts a comment in the database.
  */
 async function insertComment(req, res, next) {
@@ -63,7 +85,7 @@ function setRootComment(req, res, next) {
 	// Find the id of the root comment with recursion
 	const rootCommentID = helper.findRootComment(
 		req.body.allComments,
-		req.body.newComment.id
+		req.body.newComment.replyingToComment
 	);
 
 	req.body.newComment = {
@@ -75,6 +97,7 @@ function setRootComment(req, res, next) {
 }
 
 module.exports = {
+	checkEmptyReply,
 	checkMissingContent,
 	insertComment,
 	setRootComment,

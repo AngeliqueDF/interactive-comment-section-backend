@@ -136,12 +136,20 @@ describe.only('POST "/api/comments/newReply"', () => {
 			{
 				id: 1,
 				content: "first comment",
+				createdAt: new Date(),
+				score: 12,
 				user: 1,
+				replies: [],
+				replyingToUser: null,
+				replyingToComment: null,
 			},
 			{
 				id: 2,
 				content: "second comment",
 				user: 2,
+				createdAt: new Date(),
+				score: 9,
+				replies: [],
 				replyingToComment: 1,
 				replyingToUser: 1,
 			},
@@ -156,6 +164,7 @@ describe.only('POST "/api/comments/newReply"', () => {
 					user: 1,
 					replyingToComment: 2,
 					replyingToUser: 2,
+					replyingToAuthor: "@username ",
 				},
 			})
 			.expect(201)
