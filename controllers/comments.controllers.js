@@ -85,7 +85,7 @@ function setRootComment(req, res, next) {
 	// Find the id of the root comment with recursion
 	const rootCommentID = helper.findRootComment(
 		req.body.allComments,
-		req.body.newComment.id
+		req.body.newComment.replyingToComment
 	);
 
 	req.body.newComment = {
