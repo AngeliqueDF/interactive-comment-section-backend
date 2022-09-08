@@ -156,6 +156,7 @@ describe.only('POST "/api/comments/newReply"', () => {
 					user: 1,
 					replyingToComment: 2,
 					replyingToUser: 2,
+					replyingToAuthor: "@username ",
 				},
 			})
 			.expect(201)
