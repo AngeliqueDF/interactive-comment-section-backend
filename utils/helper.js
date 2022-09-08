@@ -11,22 +11,18 @@ function trimContent(username, content) {
  * Uses recursion to find the root comment of a reply.
  */
 const findRootComment = function (allComments, currentCommentID) {
-	// console.log(allComments, currentCommentID);
 	// Find a comment in the state by its id.
 	let currentComment = allComments.find(
 		(comment) => comment.id === currentCommentID
 	);
 
-	// If the current comment is a reply to another comment...
-	if (currentComment.replyingToComment != null) {
-		// ...store the other comment's id in currentComment.
-		currentComment = currentComment.replyingToComment;
-		// Then call the function again
-		return findRootComment(currentComment);
+	// Once we reach a comment that has null in replyingToComment, we have found the root comment. We can return its id.
+	if (currentComment.replyingToComment === null) {
+		return currentComment.id;
 	}
 
-	// Once we reach a comment that has null in replyingToComment, we have found the root comment. We can return its id.
-	return currentComment.id;
+	// If the current comment is a reply to another comment, call the function again.
+	return findRootComment(allComments, currentComment.replyingToComment);
 };
 
 module.exports = {
