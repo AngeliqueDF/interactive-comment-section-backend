@@ -20,6 +20,20 @@ describe('GET "/api/comments"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
+	test.only("Returns all comments in the database", async () => {
+		const DATA = [
+			{
+				user: 1,
+				content:
+					"Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+				createdAt: new Date(),
+				score: 12,
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+		];
+
+		DATA.forEach(async (comment) => {
 			try {
 				const addedComment = await Comment.insertOne([
 					comment.user,
@@ -34,6 +48,19 @@ describe('GET "/api/comments"', () => {
 			}
 		});
 
+		const response = await api
+			.get(API_URL)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body).toHaveLength(DATA.length);
+		expect(response.body[0].user).toBe(1);
+		expect(response.body[0].user).toBe(DATA[0].user);
+		expect(response.body[0].content).toBe(DATA[0].content);
+		expect(spy).toHaveBeenCalled();
+		expect(response.body[0].score).toBe(DATA[0].score);
+		expect(response.body[0].replyingToComment).toBe(DATA[0].replyingToComment);
+		expect(response.body[0].replyingToUser).toBe(DATA[0].replyingToUser);
 	});
 
 	test("Returns all comments in the database", async () => {
