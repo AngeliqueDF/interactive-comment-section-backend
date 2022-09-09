@@ -96,9 +96,29 @@ function setRootComment(req, res, next) {
 	next();
 }
 
+/**
+ * Populates all comments' replies arrays.
+ */
+async function getAllComments(req, res, next) {
+	try {
+		const allComments = await CommentModel.getAll();
+		const allCommentsWithReplies = helper.findAllReplies(allComments);
+
+		req.body.allCommentsWithReplies = allCommentsWithReplies;
+		next();
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function findCurrentUserVotes(req, res, next) {
+	const allUserVotes = await CommentModel.getAllUserVotes();
+}
+
 module.exports = {
 	checkEmptyReply,
 	checkMissingContent,
 	insertComment,
 	setRootComment,
+	getAllComments,
 };

@@ -16,43 +16,24 @@ const API_URL = "/api/comments";
 const spy = jest.spyOn(global, "Date");
 
 describe('GET "/api/comments"', () => {
-	// ARRANGE
-	const INITIAL_COMMENTS = [
-		{
-			user: 0,
-			content:
-				"Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
-			createdAt: new Date(),
-			score: 12,
-		},
-		{
-			user: 1,
-			content:
-				"Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
-			createdAt: new Date(),
-			score: 5,
-		},
-		{
-			user: 2,
-			content:
-				"If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
-			createdAt: new Date(),
-			score: 4,
-			replyingTo: "maxblagun",
-		},
-		{
-			user: 3,
-			content:
-				"I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
-			createdAt: new Date(),
-			score: 2,
-			replyingTo: "ramsesmiron",
-		},
-	];
+	afterEach(() => {
+		db.run(`DELETE FROM comments;`);
+	});
 
-	beforeEach(() => {
-		// add
-		INITIAL_COMMENTS.forEach(async (comment) => {
+	test.only("Returns all comments in the database", async () => {
+		const DATA = [
+			{
+				user: 1,
+				content:
+					"Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+				createdAt: new Date(),
+				score: 12,
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+		];
+
+		DATA.forEach(async (comment) => {
 			try {
 				const addedComment = await Comment.insertOne([
 					comment.user,
@@ -66,24 +47,73 @@ describe('GET "/api/comments"', () => {
 				console.log(error);
 			}
 		});
-	});
 
-	afterEach(() => {
-		db.run(`DELETE FROM comments;`);
-	});
-	// End arrange
-
-	test("Returns all comments in the database", async () => {
 		const response = await api
 			.get(API_URL)
 			.expect(200)
 			.expect("Content-Type", /application\/json/);
 
-		expect(response.body).toHaveLength(INITIAL_COMMENTS.length);
+		expect(response.body).toHaveLength(DATA.length);
+		expect(response.body[0].user).toBe(1);
+		expect(response.body[0].user).toBe(DATA[0].user);
+		expect(response.body[0].content).toBe(DATA[0].content);
+		expect(spy).toHaveBeenCalled();
+		expect(response.body[0].score).toBe(DATA[0].score);
+		expect(response.body[0].replyingToComment).toBe(DATA[0].replyingToComment);
+		expect(response.body[0].replyingToUser).toBe(DATA[0].replyingToUser);
+	});
+
+	test.only("Replies are correctly included in the array of their root comment", async () => {
+		const ROOT_COMMENT_CONTENT = "This is the root comment";
+		const DATA = [
+			{
+				user: 1,
+				content: ROOT_COMMENT_CONTENT,
+				createdAt: new Date(),
+				score: 12,
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+			{
+				user: 2,
+				content: "This is the reply",
+				createdAt: new Date(),
+				score: 5,
+				replyingToUser: 0,
+				replyingToComment: 1,
+			},
+		];
+
+		DATA.forEach(async (comment) => {
+			try {
+				const addedComment = await Comment.insertOne([
+					comment.user,
+					comment.content,
+					comment.createdAt,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		const response = await api
+			.get(API_URL)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		const rootComment = response.body.find(
+			(comment) => comment.content === ROOT_COMMENT_CONTENT
+		);
+
+		expect(response.body).toHaveLength(2);
+		expect(rootComment.replies[0]).toBe(2);
 	});
 });
 
-describe.only('POST "/api/comments/newComment"', () => {
+describe('POST "/api/comments/newComment"', () => {
 	const ROUTE = API_URL + "/newComment";
 
 	afterEach(() => {
@@ -123,7 +153,7 @@ describe.only('POST "/api/comments/newComment"', () => {
 	});
 });
 
-describe.only('POST "/api/comments/newReply"', () => {
+describe('POST "/api/comments/newReply"', () => {
 	const ROUTE = API_URL + "/newReply";
 
 	afterEach(() => {
