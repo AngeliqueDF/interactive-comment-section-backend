@@ -113,7 +113,7 @@ describe('GET "/api/comments"', () => {
 	});
 });
 
-describe.only('POST "/api/comments/newComment"', () => {
+describe('POST "/api/comments/newComment"', () => {
 	const ROUTE = API_URL + "/newComment";
 
 	afterEach(() => {
@@ -153,7 +153,7 @@ describe.only('POST "/api/comments/newComment"', () => {
 	});
 });
 
-describe.only('POST "/api/comments/newReply"', () => {
+describe('POST "/api/comments/newReply"', () => {
 	const ROUTE = API_URL + "/newReply";
 
 	afterEach(() => {
