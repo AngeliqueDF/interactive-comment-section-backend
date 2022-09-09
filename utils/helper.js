@@ -1,4 +1,25 @@
 /**
+ * Adds a replies array to all comments. Then populates the same array with the id keys of received replies.
+ */
+function findAllReplies(allComments) {
+	let allCommentsWithReplies = allComments.map((comment) => {
+		return { ...comment, replies: [] };
+	});
+
+	allCommentsWithReplies.forEach((comment) => {
+		if (comment.replyingToComment) {
+			const rootCommentIndex = allCommentsWithReplies.findIndex(
+				(current) => current.id === comment.replyingToComment
+			);
+
+			allCommentsWithReplies[rootCommentIndex].replies.push(comment.id);
+		}
+	});
+
+	return allCommentsWithReplies;
+}
+
+/**
  * Trims the comment to only keep the actual content. Avoids duplicated "@username "
  */
 function trimContent(username, content) {
@@ -28,4 +49,5 @@ const findRootComment = function (allComments, currentCommentID) {
 module.exports = {
 	findRootComment,
 	trimContent,
+	findAllReplies,
 };
