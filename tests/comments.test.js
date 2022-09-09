@@ -63,13 +63,53 @@ describe('GET "/api/comments"', () => {
 		expect(response.body[0].replyingToUser).toBe(DATA[0].replyingToUser);
 	});
 
-	test("Returns all comments in the database", async () => {
+	test.only("Replies are correctly included in the array of their root comment", async () => {
+		const ROOT_COMMENT_CONTENT = "This is the root comment";
+		const DATA = [
+			{
+				user: 1,
+				content: ROOT_COMMENT_CONTENT,
+				createdAt: new Date(),
+				score: 12,
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+			{
+				user: 2,
+				content: "This is the reply",
+				createdAt: new Date(),
+				score: 5,
+				replyingToUser: 0,
+				replyingToComment: 1,
+			},
+		];
+
+		DATA.forEach(async (comment) => {
+			try {
+				const addedComment = await Comment.insertOne([
+					comment.user,
+					comment.content,
+					comment.createdAt,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
 		const response = await api
 			.get(API_URL)
 			.expect(200)
 			.expect("Content-Type", /application\/json/);
 
-		expect(response.body).toHaveLength(INITIAL_COMMENTS.length);
+		const rootComment = response.body.find(
+			(comment) => comment.content === ROOT_COMMENT_CONTENT
+		);
+
+		expect(response.body).toHaveLength(2);
+		expect(rootComment.replies[0]).toBe(2);
 	});
 });
 
