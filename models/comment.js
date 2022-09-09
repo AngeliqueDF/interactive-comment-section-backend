@@ -28,6 +28,10 @@ const CREATE_COMMENT_VOTES_TABLE_QUERY = `CREATE TABLE comment_votes(
  */
 const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score,  replyingToComment, replyingToUser) VALUES (?, ?, ?, ?, ?, ?)`;
 
+/**
+ *  Get all comments
+ */
+const GET_ALL_COMMENTS_QUERY = `SELECT * FROM comments;`;
 // Drop comments table
 const DROP_COMMENTS_TABLE_QUERY = "DROP TABLE IF EXISTS comments;";
 
