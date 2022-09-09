@@ -3,6 +3,13 @@ const CommentsRouter = require("express").Router();
 const CommentController = require("./comments.controllers");
 
 /**
+ * Get all comments
+ */
+CommentsRouter.get("/", CommentController.getAllComments, (req, res) => {
+	res.json(req.body.allCommentsWithReplies);
+});
+
+/**
  * Add a new comment
  */
 CommentsRouter.post(
