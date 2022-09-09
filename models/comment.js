@@ -48,6 +48,10 @@ module.exports = {
 		);
 		return addCommentResult;
 	},
+	getAll: async function () {
+		const allComments = await Database.getAll(GET_ALL_COMMENTS_QUERY);
+		return allComments;
+	},
 	DROP_COMMENTS_TABLE_QUERY,
 	DROP_COMMENT_VOTES_TABLE_QUERY,
 };
