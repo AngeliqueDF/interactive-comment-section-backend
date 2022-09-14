@@ -9,7 +9,7 @@ const xss = require("xss");
 const helper = require("./../utils/helper");
 
 /**
- * Checks the content property is defined in a request body.
+ * Checks the new comment or reply has a defined content property.
  */
 function checkMissingContent(req, res, next) {
 	if (!req.body.newComment.content) {
