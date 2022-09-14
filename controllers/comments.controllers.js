@@ -9,7 +9,7 @@ const xss = require("xss");
 const helper = require("./../utils/helper");
 
 /**
- * Checks the content property is defined in a request body.
+ * Checks the new comment or reply has a defined content property.
  */
 function checkMissingContent(req, res, next) {
 	if (!req.body.newComment.content) {
@@ -18,28 +18,6 @@ function checkMissingContent(req, res, next) {
 		next(err);
 	}
 	next();
-}
-
-/**
- * Checks the content property is defined in a request body.
- */
-function checkEmptyReply(req, res, next) {
-	try {
-		const trimmedContent = helper.trimContent(
-			req.body.newComment.replyingToAuthor,
-			req.body.newComment.content
-		);
-
-		if (!trimmedContent) {
-			const err = new Error();
-			err.name = "MissingRequiredField";
-			next(err);
-		}
-		req.body.newComment.content = trimmedContent;
-		next();
-	} catch (error) {
-		next(error);
-	}
 }
 
 /**
@@ -116,7 +94,6 @@ async function findCurrentUserVotes(req, res, next) {
 }
 
 module.exports = {
-	checkEmptyReply,
 	checkMissingContent,
 	insertComment,
 	setRootComment,

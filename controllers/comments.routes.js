@@ -23,7 +23,7 @@ CommentsRouter.post(
 
 CommentsRouter.post(
 	"/newReply",
-	CommentController.checkEmptyReply,
+	CommentController.checkMissingContent,
 	CommentController.insertComment,
 	CommentController.setRootComment,
 	(req, res) => {
