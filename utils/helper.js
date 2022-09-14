@@ -20,15 +20,6 @@ function findAllReplies(allComments) {
 }
 
 /**
- * Trims the comment to only keep the actual content. Avoids duplicated "@username "
- */
-function trimContent(username, content) {
-	const usernameLength = username.length + 2;
-	const trimContent = content.substring(usernameLength, content.length);
-	return trimContent;
-}
-
-/**
  * Uses recursion to find the root comment of a reply.
  */
 const findRootComment = function (allComments, currentCommentID) {
@@ -48,6 +39,5 @@ const findRootComment = function (allComments, currentCommentID) {
 
 module.exports = {
 	findRootComment,
-	trimContent,
 	findAllReplies,
 };
