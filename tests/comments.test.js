@@ -20,7 +20,7 @@ describe('GET "/api/comments"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
-	test.only("Returns all comments in the database", async () => {
+	test("Returns all comments in the database", async () => {
 		const DATA = [
 			{
 				user: 1,
@@ -63,7 +63,7 @@ describe('GET "/api/comments"', () => {
 		expect(response.body[0].replyingToUser).toBe(DATA[0].replyingToUser);
 	});
 
-	test.only("Replies are correctly included in the array of their root comment", async () => {
+	test("Replies are correctly included in the array of their root comment", async () => {
 		const ROOT_COMMENT_CONTENT = "This is the root comment";
 		const DATA = [
 			{
@@ -161,7 +161,7 @@ describe('POST "/api/comments/newReply"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
-	test("Returns the correct information on the comment getting replied to .", async () => {
+	test.only("Returns the correct information on the comment getting replied to.", async () => {
 		const DATA = [
 			{
 				id: 1,
@@ -185,21 +185,24 @@ describe('POST "/api/comments/newReply"', () => {
 			},
 		];
 
+		const newReply = {
+			content: "Replies to comment 2, but its root comment's id is 1.",
+			user: 1,
+			replyingToComment: 2,
+			replyingToUser: 2,
+			replyingToAuthor: "@username ",
+		};
+
 		const response = await api
 			.post(ROUTE)
 			.send({
 				allComments: DATA,
-				newComment: {
-					content: "Replies to comment 2, but its root comment's id is 1.",
-					user: 1,
-					replyingToComment: 2,
-					replyingToUser: 2,
-					replyingToAuthor: "@username ",
-				},
+				newComment: { ...newReply },
 			})
 			.expect(201)
 			.expect("Content-Type", /application\/json/);
 
+		expect(response.body.content).toBe(newReply.content);
 		expect(response.body.replyingToComment).toBe(1);
 		expect(response.body.replyingToUser).toBe(2);
 	});
