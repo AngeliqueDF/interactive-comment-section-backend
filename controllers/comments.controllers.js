@@ -21,22 +21,6 @@ function checkMissingContent(req, res, next) {
 }
 
 /**
- * Checks the content property is defined in a request body.
- */
-function checkEmptyReply(req, res, next) {
-	try {
-		if (!req.body.newComment.content.length) {
-			const err = new Error();
-			err.name = "MissingRequiredField";
-			next(err);
-		}
-		next();
-	} catch (error) {
-		next(error);
-	}
-}
-
-/**
  * Sanitizes input and inserts a comment in the database.
  */
 async function insertComment(req, res, next) {
@@ -110,7 +94,6 @@ async function findCurrentUserVotes(req, res, next) {
 }
 
 module.exports = {
-	checkEmptyReply,
 	checkMissingContent,
 	insertComment,
 	setRootComment,
