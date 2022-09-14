@@ -25,17 +25,11 @@ function checkMissingContent(req, res, next) {
  */
 function checkEmptyReply(req, res, next) {
 	try {
-		const trimmedContent = helper.trimContent(
-			req.body.newComment.replyingToAuthor,
-			req.body.newComment.content
-		);
-
-		if (!trimmedContent) {
+		if (!req.body.newComment.content.length) {
 			const err = new Error();
 			err.name = "MissingRequiredField";
 			next(err);
 		}
-		req.body.newComment.content = trimmedContent;
 		next();
 	} catch (error) {
 		next(error);
