@@ -156,7 +156,7 @@ describe('POST "/api/comments/newReply"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
-	test.only("Returns the correct information on the comment getting replied to.", async () => {
+	test("Returns the correct information on the comment getting replied to.", async () => {
 		const DATA = [
 			{
 				id: 1,
