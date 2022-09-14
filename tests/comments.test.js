@@ -26,7 +26,6 @@ describe('GET "/api/comments"', () => {
 				user: 1,
 				content:
 					"Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
-				createdAt: new Date(),
 				score: 12,
 				replyingToUser: null,
 				replyingToComment: null,
@@ -38,7 +37,6 @@ describe('GET "/api/comments"', () => {
 				const addedComment = await Comment.insertOne([
 					comment.user,
 					comment.content,
-					comment.createdAt,
 					comment.score,
 					comment.replyingToComment,
 					comment.replyingToUser,
@@ -69,7 +67,6 @@ describe('GET "/api/comments"', () => {
 			{
 				user: 1,
 				content: ROOT_COMMENT_CONTENT,
-				createdAt: new Date(),
 				score: 12,
 				replyingToUser: null,
 				replyingToComment: null,
@@ -77,7 +74,6 @@ describe('GET "/api/comments"', () => {
 			{
 				user: 2,
 				content: "This is the reply",
-				createdAt: new Date(),
 				score: 5,
 				replyingToUser: 0,
 				replyingToComment: 1,
@@ -89,7 +85,6 @@ describe('GET "/api/comments"', () => {
 				const addedComment = await Comment.insertOne([
 					comment.user,
 					comment.content,
-					comment.createdAt,
 					comment.score,
 					comment.replyingToComment,
 					comment.replyingToUser,
@@ -166,7 +161,6 @@ describe('POST "/api/comments/newReply"', () => {
 			{
 				id: 1,
 				content: "first comment",
-				createdAt: new Date(),
 				score: 12,
 				user: 1,
 				replies: [],
@@ -177,7 +171,6 @@ describe('POST "/api/comments/newReply"', () => {
 				id: 2,
 				content: "second comment",
 				user: 2,
-				createdAt: new Date(),
 				score: 9,
 				replies: [],
 				replyingToComment: 1,
