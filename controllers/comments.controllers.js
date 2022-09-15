@@ -42,7 +42,11 @@ async function insertComment(req, res, next) {
 		newComment.replyingToUser,
 	])
 		.then((newCommentID) => {
-			req.body.newComment = { id: newCommentID, ...newComment };
+			req.body.newComment = {
+				...newComment,
+				id: newCommentID,
+				createdAt: helper.formatDate(newComment.createdAt),
+			};
 			next();
 		})
 		.catch((error) => {
