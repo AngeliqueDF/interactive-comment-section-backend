@@ -52,8 +52,10 @@ describe('GET "/api/comments"', () => {
 		expect(response.body[0].user).toBe(1);
 		expect(response.body[0].user).toBe(DATA[0].user);
 		expect(response.body[0].content).toBe(DATA[0].content);
-		expect(spy).toHaveBeenCalled();
 		expect(response.body[0].score).toBe(DATA[0].score);
+		expect(response.body[0].createdAt).toBeDefined();
+		expect(response.body[0].createdAt instanceof Date && !isNaN(date.valueOf()))
+			.toBeTrue;
 		expect(response.body[0].replyingToComment).toBe(DATA[0].replyingToComment);
 		expect(response.body[0].replyingToUser).toBe(DATA[0].replyingToUser);
 	});
@@ -130,7 +132,8 @@ describe('POST "/api/comments/newComment"', () => {
 		expect(response.body.content).toEqual(VALID_NEW_COMMENT.content);
 		expect(response.body.user).toEqual(VALID_NEW_COMMENT.user);
 		expect(response.body.createdAt).toBeDefined();
-		expect(spy).toHaveBeenCalled(); // Check new Date() was called. createdAt will evaluate to '[object Object]' in the database, and mockConstructor {} in the response body. Which is normal because the Date constructor is being mocked.
+		expect(response.body.createdAt instanceof Date && !isNaN(date.valueOf()))
+			.toBeTrue;
 		expect(response.body.replyingToComment).toBeNull();
 		expect(response.body.replyingToUser).toBeNull();
 	});
