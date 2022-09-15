@@ -1,6 +1,6 @@
 const path = require("path");
 
-const Comment = require("./../../../models/comment");
+const Comment = require("./../../../models/Comment");
 
 db.all(Comment.getAllComments(), (err, rows) => {
 	if (err) {

@@ -1,6 +1,6 @@
 const path = require("path");
 
-const Comment = require(path.resolve(__dirname, "./../../../models/comment"));
+const Comment = require(path.resolve(__dirname, "./../../../models/Comment"));
 
 const statement = db.prepare(Comment.newComment());
 const COMMENT = {

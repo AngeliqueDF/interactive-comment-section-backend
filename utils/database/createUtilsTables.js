@@ -5,7 +5,7 @@ const db = require(path.resolve(
 	"./../../models/DatabaseConnection"
 )).connectDatabase();
 
-const Comment = require("../../models/comment");
+const Comment = require("../../models/Comment");
 const User = require("../../models/user");
 
 db.serialize(() => {

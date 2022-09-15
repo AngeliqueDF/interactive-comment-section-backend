@@ -2,7 +2,7 @@ const path = require("path");
 
 console.log("Adding a sample comment to the database");
 
-const Comment = require(path.resolve(__dirname, "./../../../models/comment"));
+const Comment = require(path.resolve(__dirname, "./../../../models/Comment"));
 
 console.log("adding comment");
 try {
