@@ -3,7 +3,7 @@ const db = require(path.resolve(
 	__dirname,
 	"./../../../models/connectUtilsTestDatabase.js"
 ))();
-const Comment = require("./../../../models/comment");
+const Comment = require("./../../../models/Comment");
 
 const statement = db.prepare(Comment.newComment());
 const comments = [
