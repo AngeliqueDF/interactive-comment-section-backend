@@ -26,7 +26,7 @@ const CREATE_COMMENT_VOTES_TABLE_QUERY = `CREATE TABLE comment_votes(
 /**
  * Add a new comment
  */
-const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score,  replyingToComment, replyingToUser) VALUES (?, ?, ?, ?, ?, ?)`;
+const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score,  replyingToComment, replyingToUser) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?)`;
 
 /**
  *  Get all comments

@@ -1,7 +1,7 @@
 const path = require("path");
 
 // Modules interacting with the database
-const CommentModel = require(path.resolve(__dirname, "./../models/comment"));
+const CommentModel = require(path.resolve(__dirname, "./../models/Comment"));
 
 // Strips dangerous characters from data sent by clients.
 const xss = require("xss");
@@ -37,7 +37,6 @@ async function insertComment(req, res, next) {
 	CommentModel.insertOne([
 		newComment.user,
 		newComment.content,
-		newComment.createdAt,
 		newComment.score,
 		newComment.replyingToComment,
 		newComment.replyingToUser,

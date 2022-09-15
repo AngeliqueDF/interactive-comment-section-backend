@@ -12,9 +12,6 @@ const Comment = require(path.resolve(__dirname, "./../models/comment"));
 
 const API_URL = "/api/comments";
 
-// Mock the Date object. Will be used to check an instance of Date was created
-const spy = jest.spyOn(global, "Date");
-
 describe('GET "/api/comments"', () => {
 	afterEach(() => {
 		db.run(`DELETE FROM comments;`);
@@ -26,7 +23,6 @@ describe('GET "/api/comments"', () => {
 				user: 1,
 				content:
 					"Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
-				createdAt: new Date(),
 				score: 12,
 				replyingToUser: null,
 				replyingToComment: null,
@@ -38,7 +34,6 @@ describe('GET "/api/comments"', () => {
 				const addedComment = await Comment.insertOne([
 					comment.user,
 					comment.content,
-					comment.createdAt,
 					comment.score,
 					comment.replyingToComment,
 					comment.replyingToUser,
@@ -57,8 +52,10 @@ describe('GET "/api/comments"', () => {
 		expect(response.body[0].user).toBe(1);
 		expect(response.body[0].user).toBe(DATA[0].user);
 		expect(response.body[0].content).toBe(DATA[0].content);
-		expect(spy).toHaveBeenCalled();
 		expect(response.body[0].score).toBe(DATA[0].score);
+		expect(response.body[0].createdAt).toBeDefined();
+		expect(response.body[0].createdAt instanceof Date && !isNaN(date.valueOf()))
+			.toBeTrue;
 		expect(response.body[0].replyingToComment).toBe(DATA[0].replyingToComment);
 		expect(response.body[0].replyingToUser).toBe(DATA[0].replyingToUser);
 	});
@@ -69,7 +66,6 @@ describe('GET "/api/comments"', () => {
 			{
 				user: 1,
 				content: ROOT_COMMENT_CONTENT,
-				createdAt: new Date(),
 				score: 12,
 				replyingToUser: null,
 				replyingToComment: null,
@@ -77,7 +73,6 @@ describe('GET "/api/comments"', () => {
 			{
 				user: 2,
 				content: "This is the reply",
-				createdAt: new Date(),
 				score: 5,
 				replyingToUser: 0,
 				replyingToComment: 1,
@@ -89,7 +84,6 @@ describe('GET "/api/comments"', () => {
 				const addedComment = await Comment.insertOne([
 					comment.user,
 					comment.content,
-					comment.createdAt,
 					comment.score,
 					comment.replyingToComment,
 					comment.replyingToUser,
@@ -138,7 +132,8 @@ describe('POST "/api/comments/newComment"', () => {
 		expect(response.body.content).toEqual(VALID_NEW_COMMENT.content);
 		expect(response.body.user).toEqual(VALID_NEW_COMMENT.user);
 		expect(response.body.createdAt).toBeDefined();
-		expect(spy).toHaveBeenCalled(); // Check new Date() was called. createdAt will evaluate to '[object Object]' in the database, and mockConstructor {} in the response body. Which is normal because the Date constructor is being mocked.
+		expect(response.body.createdAt instanceof Date && !isNaN(date.valueOf()))
+			.toBeTrue;
 		expect(response.body.replyingToComment).toBeNull();
 		expect(response.body.replyingToUser).toBeNull();
 	});
@@ -161,12 +156,11 @@ describe('POST "/api/comments/newReply"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
-	test.only("Returns the correct information on the comment getting replied to.", async () => {
+	test("Returns the correct information on the comment getting replied to.", async () => {
 		const DATA = [
 			{
 				id: 1,
 				content: "first comment",
-				createdAt: new Date(),
 				score: 12,
 				user: 1,
 				replies: [],
@@ -177,7 +171,6 @@ describe('POST "/api/comments/newReply"', () => {
 				id: 2,
 				content: "second comment",
 				user: 2,
-				createdAt: new Date(),
 				score: 9,
 				replies: [],
 				replyingToComment: 1,
