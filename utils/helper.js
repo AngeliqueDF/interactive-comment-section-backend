@@ -1,4 +1,27 @@
 /**
+ * Formats the date in a relative format.
+ */
+function formatDate(date) {
+	const timestamp = new Date(date).getTime();
+	const relative = new Intl.RelativeTimeFormat("en-GB", { numeric: "auto" });
+	const then = Math.floor(new Date(timestamp));
+	const now = new Date();
+	const days = (then - now) / 86400000;
+	const getRelativeDate = (formatUnit, unitInDays = 1) =>
+		relative.format(Math.trunc(days / unitInDays), formatUnit);
+
+	if (days <= -365) {
+		return getRelativeDate("year", -365);
+	} else if (days <= -30) {
+		return getRelativeDate("month", -30);
+	} else if (days <= -7) {
+		return getRelativeDate("week", -7);
+	} else if (days > -7) {
+		return getRelativeDate("days");
+	}
+}
+
+/**
  * Adds a replies array to all comments. Then populates the same array with the id keys of received replies.
  */
 function findAllReplies(allComments) {
@@ -38,6 +61,7 @@ const findRootComment = function (allComments, currentCommentID) {
 };
 
 module.exports = {
+	formatDate,
 	findRootComment,
 	findAllReplies,
 };
