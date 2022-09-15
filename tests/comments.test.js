@@ -12,9 +12,6 @@ const Comment = require(path.resolve(__dirname, "./../models/comment"));
 
 const API_URL = "/api/comments";
 
-// Mock the Date object. Will be used to check an instance of Date was created
-const spy = jest.spyOn(global, "Date");
-
 describe('GET "/api/comments"', () => {
 	afterEach(() => {
 		db.run(`DELETE FROM comments;`);
