@@ -81,7 +81,9 @@ async function getAllComments(req, res, next) {
 		const allComments = await CommentModel.getAll();
 		const allCommentsWithReplies = helper.findAllReplies(allComments);
 
-		req.body.allCommentsWithReplies = allCommentsWithReplies;
+		req.body.allCommentsWithReplies = allCommentsWithReplies.map((comment) => {
+			return { ...comment, createdAt: helper.formatDate(comment.createdAt) };
+		});
 		next();
 	} catch (error) {
 		console.log(error);
