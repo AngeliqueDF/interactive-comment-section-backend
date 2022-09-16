@@ -22,6 +22,15 @@ function formatDate(date) {
 }
 
 /**
+ * Trims the comment to only keep the actual content. Avoids duplicated "@username "
+ */
+function trimContent(username, content) {
+	const usernameLength = username.length + 2;
+	const trimContent = content.slice(usernameLength, content.length);
+	return trimContent;
+}
+
+/**
  * Adds a replies array to all comments. Then populates the same array with the id keys of received replies.
  */
 function findAllReplies(allComments) {
@@ -61,6 +70,7 @@ const findRootComment = function (allComments, currentCommentID) {
 };
 
 module.exports = {
+	trimContent,
 	formatDate,
 	findRootComment,
 	findAllReplies,
