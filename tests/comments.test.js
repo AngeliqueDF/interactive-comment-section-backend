@@ -156,6 +156,52 @@ describe('POST "/api/comments/newReply"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
+	test.only("Returns the correct value for the new reply's content.", async () => {
+		// The content as it was typed by the user, without the reference to the username of the first commenter.
+		const NEW_REPLY_ENTERED = "New reply content.";
+		const DATA = [
+			{
+				id: 1,
+				content: "first comment",
+				score: 12,
+				user: 1,
+				replies: [],
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+			{
+				id: 2,
+				content: "second comment",
+				user: 2,
+				score: 9,
+				replies: [],
+				replyingToComment: 1,
+				replyingToUser: 1,
+			},
+		];
+		const AUTHOR_GETTING_REPLY = "First Commenter";
+		const defaultValue = `@${AUTHOR_GETTING_REPLY} `;
+		const newReply = {
+			content: defaultValue + NEW_REPLY_ENTERED,
+			user: 1,
+			replyingToComment: 2,
+			replyingToUser: 2,
+			replyingToAuthor: AUTHOR_GETTING_REPLY,
+		};
+
+		const response = await api
+			.post(ROUTE)
+			.send({
+				allComments: DATA,
+				newComment: { ...newReply },
+			})
+			.expect(201)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body.content).toBe(NEW_REPLY_ENTERED);
+		expect(response.body.replyingToComment).toBe(1);
+		expect(response.body.replyingToUser).toBe(2);
+	});
 	test("Returns the correct information on the comment getting replied to.", async () => {
 		const DATA = [
 			{
