@@ -8,7 +8,7 @@ const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 
-const Comment = require(path.resolve(__dirname, "./../models/comment"));
+const Comment = require(path.resolve(__dirname, "./../models/Comment"));
 
 const API_URL = "/api/comments";
 
