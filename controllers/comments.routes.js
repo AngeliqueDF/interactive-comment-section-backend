@@ -24,8 +24,8 @@ CommentsRouter.post(
 CommentsRouter.post(
 	"/newReply",
 	CommentController.checkEmptyReply,
-	CommentController.insertComment,
 	CommentController.setRootComment,
+	CommentController.insertComment,
 	(req, res) => {
 		res.status(201).json(req.body.newComment);
 	}
