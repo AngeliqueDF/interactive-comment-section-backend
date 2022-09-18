@@ -1,10 +1,10 @@
 const path = require("path");
 const db = require(path.resolve(
 	__dirname,
-	"./models/DatabaseConnection"
+	"./models/database.connection"
 )).connectDatabase();
 
-const Comment = require("./models/Comment");
+const Comment = require("./models/comments.model");
 const User = require("./models/user");
 
 const http = require("http");

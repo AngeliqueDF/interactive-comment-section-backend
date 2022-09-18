@@ -6,7 +6,7 @@
 const path = require("path");
 const db = require(path.resolve(
 	__dirname,
-	"./DatabaseConnection.js"
+	"./database.connection.js"
 )).connectDatabase();
 
 function runPreparedStatement(sqlQuery, parameters) {

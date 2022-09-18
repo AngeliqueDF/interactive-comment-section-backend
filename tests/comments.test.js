@@ -1,14 +1,14 @@
 const path = require("path");
 const db = require(path.resolve(
 	__dirname,
-	"./../models/DatabaseConnection"
+	"./../models/database.connection"
 )).connectDatabase();
 
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 
-const Comment = require(path.resolve(__dirname, "./../models/Comment"));
+const Comment = require(path.resolve(__dirname, "./../models/comments.model"));
 
 const API_URL = "/api/comments";
 
