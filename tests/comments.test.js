@@ -156,7 +156,7 @@ describe('POST "/api/comments/newReply"', () => {
 		db.run(`DELETE FROM comments;`);
 	});
 
-	test.only("Returns the correct value for the new reply's content.", async () => {
+	test("Returns the correct value for the new reply's content.", async () => {
 		// The content as it was typed by the user, without the reference to the username of the first commenter.
 		const NEW_REPLY_ENTERED = "New reply content.";
 		const DATA = [
