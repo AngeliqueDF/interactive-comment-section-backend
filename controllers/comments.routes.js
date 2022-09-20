@@ -5,6 +5,7 @@ const CommentsSanitizer = require("./comments.sanitizer");
 const CommentController = require("./comments.controllers");
 
 // Validate and sanitize data received from the browser
+// WARNING: removing these lines will increase security risks.
 CommentsRouter.use(CommentsValidator);
 CommentsRouter.use(CommentsSanitizer);
 
