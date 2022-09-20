@@ -144,6 +144,13 @@ describe.only('POST "/api/comments/newComment"', () => {
 			.send({ newComment: { user: 1 } })
 			.expect(400);
 	});
+
+	test("Return a correct response when the id is missing", async () => {
+		const response = await api
+			.post(ROUTE)
+			.send({ newComment: { content: "content provided but no user id" } })
+			.expect(400);
+	});
 });
 
 describe('POST "/api/comments/newReply"', () => {
