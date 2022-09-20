@@ -29,7 +29,6 @@
 		"express-validator": "^6.14.2",
 		"helmet": "^5.1.0",
 		"sqlite3": "^5.0.8",
-		"validator": "^13.7.0",
-		"xss": "^1.0.11"
+		"validator": "^13.7.0"
 	}
 }
