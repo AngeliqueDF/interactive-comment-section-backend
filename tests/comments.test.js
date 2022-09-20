@@ -107,7 +107,7 @@ describe('GET "/api/comments"', () => {
 	});
 });
 
-describe('POST "/api/comments/newComment"', () => {
+describe.only('POST "/api/comments/newComment"', () => {
 	const ROUTE = API_URL + "/newComment";
 
 	afterEach(() => {
@@ -138,17 +138,22 @@ describe('POST "/api/comments/newComment"', () => {
 		expect(response.body.replyingToUser).toBeNull();
 	});
 
-	test("Return an error response when the content is missing", async () => {
+	test("Return a status code when the content is missing", async () => {
 		const response = await api
 			.post(ROUTE)
 			.send({ newComment: { user: 1 } })
-			.expect(400)
-			.expect("Content-Type", /application\/json/);
-		expect(response.body.error).toBe("Missing required field(s).");
+			.expect(400);
+	});
+
+	test("Return a correct response when the id is missing", async () => {
+		const response = await api
+			.post(ROUTE)
+			.send({ newComment: { content: "content provided but no user id" } })
+			.expect(400);
 	});
 });
 
-describe('POST "/api/comments/newReply"', () => {
+describe.only('POST "/api/comments/newReply"', () => {
 	const ROUTE = API_URL + "/newReply";
 
 	afterEach(() => {

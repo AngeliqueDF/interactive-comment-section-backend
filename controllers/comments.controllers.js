@@ -6,22 +6,7 @@ const CommentModel = require(path.resolve(
 	"./../models/comments.model"
 ));
 
-// Strips dangerous characters from data sent by clients.
-const xss = require("xss");
-
 const helper = require("./../utils/helper");
-
-/**
- * Checks the new comment or reply has a defined content property.
- */
-function checkMissingContent(req, res, next) {
-	if (!req.body.newComment.content) {
-		const err = new Error();
-		err.name = "MissingRequiredField";
-		next(err);
-	}
-	next();
-}
 
 /**
  * Checks the content property is defined in a request body.
@@ -50,13 +35,12 @@ function checkEmptyReply(req, res, next) {
  */
 async function insertComment(req, res, next) {
 	const newComment = {
-		user: Number(xss(req.body.newComment.user)),
-		content: xss(req.body.newComment.content),
+		user: req.body.newComment.user,
+		content: req.body.newComment.content,
 		score: 0,
 		createdAt: new Date(),
-		replyingToUser: Number(xss(req.body.newComment.replyingToUser)) || null,
-		replyingToComment:
-			Number(xss(req.body.newComment.replyingToComment)) || null,
+		replyingToUser: req.body.newComment.replyingToUser || null,
+		replyingToComment: req.body.newComment.replyingToComment || null,
 	};
 
 	CommentModel.insertOne([
@@ -125,7 +109,6 @@ async function findCurrentUserVotes(req, res, next) {
 
 module.exports = {
 	checkEmptyReply,
-	checkMissingContent,
 	insertComment,
 	setRootComment,
 	getAllComments,
