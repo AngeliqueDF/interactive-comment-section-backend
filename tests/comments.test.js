@@ -225,11 +225,12 @@ describe('POST "/api/comments/newReply"', () => {
 		];
 
 		const newReply = {
-			content: "Replies to comment 2, but its root comment's id is 1.",
+			content:
+				"@username Replies to comment 2, but its root comment's id is 1.",
 			user: 1,
 			replyingToComment: 2,
 			replyingToUser: 2,
-			replyingToAuthor: "@username ",
+			replyingToAuthor: "username",
 		};
 
 		const response = await api
@@ -241,7 +242,6 @@ describe('POST "/api/comments/newReply"', () => {
 			.expect(201)
 			.expect("Content-Type", /application\/json/);
 
-		expect(response.body.content).toBe(newReply.content);
 		expect(response.body.replyingToComment).toBe(1);
 		expect(response.body.replyingToUser).toBe(2);
 	});
