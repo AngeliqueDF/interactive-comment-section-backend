@@ -153,7 +153,7 @@ describe.only('POST "/api/comments/newComment"', () => {
 	});
 });
 
-describe('POST "/api/comments/newReply"', () => {
+describe.only('POST "/api/comments/newReply"', () => {
 	const ROUTE = API_URL + "/newReply";
 
 	afterEach(() => {
