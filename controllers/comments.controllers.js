@@ -1,7 +1,10 @@
 const path = require("path");
 
 // Modules interacting with the database
-const CommentModel = require(path.resolve(__dirname, "./../models/Comment"));
+const CommentModel = require(path.resolve(
+	__dirname,
+	"./../models/comments.model"
+));
 
 // Strips dangerous characters from data sent by clients.
 const xss = require("xss");
