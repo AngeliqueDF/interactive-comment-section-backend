@@ -12,18 +12,6 @@ const xss = require("xss");
 const helper = require("./../utils/helper");
 
 /**
- * Checks the new comment or reply has a defined content property.
- */
-function checkMissingContent(req, res, next) {
-	if (!req.body.newComment.content) {
-		const err = new Error();
-		err.name = "MissingRequiredField";
-		next(err);
-	}
-	next();
-}
-
-/**
  * Checks the content property is defined in a request body.
  */
 function checkEmptyReply(req, res, next) {
@@ -125,7 +113,6 @@ async function findCurrentUserVotes(req, res, next) {
 
 module.exports = {
 	checkEmptyReply,
-	checkMissingContent,
 	insertComment,
 	setRootComment,
 	getAllComments,
