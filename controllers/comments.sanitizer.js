@@ -13,4 +13,17 @@ CommentsSanitizer.post(
 	}
 );
 
+/**
+ * Sanitize request body when adding a new reply
+ */
+CommentsSanitizer.post(
+	"/newReply",
+	body("newComment.content").trim().escape(),
+	body("newComment.replyingToAuthor").trim().escape(),
+	(req, res, next) => {
+		console.log(req.body.newComment.content);
+		next();
+	}
+);
+
 module.exports = CommentsSanitizer;
