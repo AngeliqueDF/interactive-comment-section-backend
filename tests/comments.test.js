@@ -46,6 +46,10 @@ describe('GET "/api/comments"', () => {
 		const response = await api
 			.get(API_URL)
 			.expect(200)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
 			.expect("Content-Type", /application\/json/);
 
 		expect(response.body).toHaveLength(DATA.length);
@@ -95,6 +99,10 @@ describe('GET "/api/comments"', () => {
 
 		const response = await api
 			.get(API_URL)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
 			.expect(200)
 			.expect("Content-Type", /application\/json/);
 
@@ -107,7 +115,7 @@ describe('GET "/api/comments"', () => {
 	});
 });
 
-describe.only('POST "/api/comments/newComment"', () => {
+describe('POST "/api/comments/newComment"', () => {
 	const ROUTE = API_URL + "/newComment";
 
 	afterEach(() => {
@@ -123,6 +131,10 @@ describe.only('POST "/api/comments/newComment"', () => {
 	test("Return the correct response when all required fields are provided.", async () => {
 		const response = await api
 			.post(ROUTE)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
 			.send({
 				newComment: VALID_NEW_COMMENT,
 			})
@@ -141,19 +153,31 @@ describe.only('POST "/api/comments/newComment"', () => {
 	test("Return a status code when the content is missing", async () => {
 		const response = await api
 			.post(ROUTE)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
 			.send({ newComment: { user: 1 } })
 			.expect(400);
+
+		// TODO change the API or remove those assertions.
+		// 	.expect("Content-Type", /application\/json/);
+		// expect(response.body.error).toBe("Missing required field(s).");
 	});
 
 	test("Return a correct response when the id is missing", async () => {
 		const response = await api
 			.post(ROUTE)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
 			.send({ newComment: { content: "content provided but no user id" } })
 			.expect(400);
 	});
 });
 
-describe.only('POST "/api/comments/newReply"', () => {
+describe('POST "/api/comments/newReply"', () => {
 	const ROUTE = API_URL + "/newReply";
 
 	afterEach(() => {
@@ -196,6 +220,10 @@ describe.only('POST "/api/comments/newReply"', () => {
 
 		const response = await api
 			.post(ROUTE)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
 			.send({
 				allComments: DATA,
 				newComment: { ...newReply },
@@ -240,6 +268,10 @@ describe.only('POST "/api/comments/newReply"', () => {
 
 		const response = await api
 			.post(ROUTE)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
 			.send({
 				allComments: DATA,
 				newComment: { ...newReply },
