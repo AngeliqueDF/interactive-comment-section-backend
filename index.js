@@ -5,6 +5,7 @@ const db = require(path.resolve(
 )).connectDatabase();
 
 const Comment = require("./models/comments.model");
+const CommentVote = require("./models/comments.votes.model");
 const User = require("./models/user");
 
 const http = require("http");
@@ -17,7 +18,7 @@ server.listen(process.env.PORT || 5000, () => {
 
 	db.serialize(() => {
 		db.run(Comment.DROP_COMMENTS_TABLE_QUERY);
-		db.run(Comment.DROP_COMMENT_VOTES_TABLE_QUERY);
+		db.run(CommentVote.DROP_COMMENT_VOTES_TABLE_QUERY);
 		db.run(User.DROP_USERS_TABLE_QUERY);
 
 		db.run(User.CREATE_USERS_TABLE_QUERY, (err) => {
@@ -34,7 +35,7 @@ server.listen(process.env.PORT || 5000, () => {
 			console.log("\x1b[34m", "Table comments created");
 		});
 
-		db.run(Comment.CREATE_COMMENT_VOTES_TABLE_QUERY, (err) => {
+		db.run(CommentVote.CREATE_COMMENT_VOTES_TABLE_QUERY, (err) => {
 			if (err) {
 				console.log(err);
 			}
