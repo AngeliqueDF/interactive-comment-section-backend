@@ -1,13 +1,22 @@
+/**
+ * This script can be used to test adding a new comment and a new reply.
+ */
+
 const path = require("path");
 
-console.log("Adding a sample comment to the database");
+const Comment = require(path.resolve(
+	__dirname,
+	"./../../../models/comments.model"
+));
 
-const Comment = require(path.resolve(__dirname, "./../../../models/Comment"));
-
-console.log("adding comment");
+console.log("Launching script to add a sample comment to the database…");
 try {
-	Comment.insertOne([1, "Added by addComment.js", new Date(), 0]);
-	console.log("comment added");
+	console.log("Running SQL query…");
+	const addedComment = Comment.insertOne([1, "Added by addComment.js", 0]);
+
+	addedComment.then((id) => {
+		console.log("Comment added! id: ", id);
+	});
 } catch (error) {
 	console.log(error);
 }
