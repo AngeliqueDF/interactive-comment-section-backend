@@ -4,7 +4,7 @@ const db = require(path.resolve(
 	"./../../../models/connectUtilsTestDatabase.js"
 ))();
 
-const Comment = require(path.resolve(__dirname, "./../../../models/comment"));
+const Comment = require(path.resolve(__dirname, "./../../../models/Comment"));
 
 const statement = db.prepare(Comment.updateCommentContent());
 

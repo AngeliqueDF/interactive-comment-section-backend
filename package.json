@@ -7,6 +7,8 @@
 		"test": "tests"
 	},
 	"scripts": {
+		"start": "cross-env NODE_ENV=production node index.js",
+		"build": "echo 'Building the app'",
 		"dev": "cross-env NODE_ENV=development nodemon index.js",
 		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
 		"start:test": "cross-env NODE_ENV=test PORT=5001 jest --watchAll"
@@ -16,7 +18,7 @@
 	"devDependencies": {
 		"cross-env": "^7.0.3",
 		"jest": "^28.1.0",
-		"nodemon": "^2.0.16",
+		"nodemon": "^2.0.20",
 		"prettier": "^2.6.2",
 		"supertest": "^6.2.3"
 	},
@@ -24,9 +26,10 @@
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.1",
 		"express": "^4.18.1",
+		"express-basic-auth": "^1.2.1",
+		"express-validator": "^6.14.2",
 		"helmet": "^5.1.0",
 		"sqlite3": "^5.0.8",
-		"validator": "^13.7.0",
-		"xss": "^1.0.11"
+		"validator": "^13.7.0"
 	}
 }
