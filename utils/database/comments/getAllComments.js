@@ -1,11 +1,7 @@
-const path = require("path");
-
-const Comment = require("./../../../models/Comment");
-
-db.all(Comment.getAllComments(), (err, rows) => {
-	if (err) {
-		console.log(err);
-		return err;
-	}
-	console.log("rows", rows);
+const Comment = require(path.resolve(
+	__dirname,
+	"./../../../models/comments.model"
+));
+Comment.getAll().then((allComments) => {
+	console.log(allComments);
 });

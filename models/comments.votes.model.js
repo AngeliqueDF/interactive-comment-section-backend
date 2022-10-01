@@ -27,7 +27,7 @@ const GET_ALL_USER_comments_votes = `SELECT id, comment_id, vote_given FROM comm
 /**
  * Drop comment votes table
  */
-const DROP_COMMENT_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comment_votes;";
+const DROP_COMMENT_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comments_votes;";
 
 module.exports = {
 	CREATE_COMMENT_VOTES_TABLE_QUERY,
