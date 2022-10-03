@@ -4,12 +4,14 @@ const Database = require(path.resolve(__dirname, "./database.query.runner"));
 /**
  * Create comments votes table. The table is used to keep track of the current user's comment votes.
  */
-const CREATE_COMMENT_VOTES_TABLE_QUERY = `CREATE TABLE comments_votes(
+const CREATE_COMMENTS_VOTES_TABLE_QUERY = `
+CREATE TABLE comments_votes (
   id INTEGER PRIMARY KEY,
   comment_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
   vote_given TEXT NOT NULL
-)`;
+);`;
+
 
 /**
  * TODO Add one point to the score of a comment.
@@ -30,7 +32,7 @@ const GET_ALL_USER_comments_votes = `SELECT id, comment_id, vote_given FROM comm
 const DROP_COMMENT_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comments_votes;";
 
 module.exports = {
-	CREATE_COMMENT_VOTES_TABLE_QUERY,
+	CREATE_COMMENTS_VOTES_TABLE_QUERY,
 	insertOne: async function (parameters) {
 		const addCommentResult = await Database.addOne(
 			NEW_COMMENT_QUERY,
