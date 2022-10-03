@@ -49,4 +49,11 @@ module.exports = {
 		return userVotes;
 	},
 	DROP_COMMENTS_VOTES_TABLE_QUERY,
+	getOne: async function (parameters) {
+		const commentFound = await Database.getById(
+			GET_SPECIFIC_COMMENT_VOTE_BY_USER_ID,
+			parameters
+		);
+		return commentFound;
+	},
 };
