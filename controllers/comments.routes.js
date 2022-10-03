@@ -46,4 +46,11 @@ CommentsRouter.post(
  */
 CommentsRouter.post("/votes", CommentsVotesController.checkDuplicateVote);
 
+/**
+ * Add a new vote
+ */
+CommentsRouter.post("/votes", CommentsVotesController.addVote, (req, res) => {
+	res.status(201).json();
+});
+
 module.exports = CommentsRouter;
