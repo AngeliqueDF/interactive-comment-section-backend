@@ -42,11 +42,11 @@ const DROP_COMMENTS_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comments_votes;";
 module.exports = {
 	CREATE_COMMENTS_VOTES_TABLE_QUERY,
 	insertOne: async function (parameters) {
-		const addCommentResult = await Database.addOne(
-			NEW_COMMENT_QUERY,
+		const addVoteResult = await Database.addOne(
+			ADD_COMMENT_VOTE_QUERY,
 			parameters
 		);
-		return addCommentResult;
+		return addVoteResult;
 	},
 	getAllByUser: async function (userID) {
 		const userVotes = await Database.getById(
