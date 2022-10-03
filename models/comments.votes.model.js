@@ -27,6 +27,14 @@ CREATE TABLE comments_votes (
 const GET_ALL_USER_COMMENTS_VOTES = `SELECT comment_id, vote_given FROM comments_votes WHERE user_id = ?;`;
 
 /**
+ * TODO Find whether the current user has already voted for a specific command. Used when they are attempting to vote for any comment.
+ */
+const GET_SPECIFIC_COMMENT_VOTE_BY_USER_ID = `
+SELECT comment_id
+FROM comments_votes
+WHERE user_id = ?;`;
+
+/**
  * Drop comment votes table
  */
 const DROP_COMMENTS_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comments_votes;";
