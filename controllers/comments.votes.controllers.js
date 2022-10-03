@@ -23,6 +23,21 @@ async function checkDuplicateVote(req, res, next) {
 	}
 }
 
+async function addVote(req, res, next) {
+	try {
+		const addedVote = await CommentsVotesModel.insertOne([
+			req.body.commentID,
+			req.body.user,
+			req.body.voteGiven,
+		]);
+
+		next();
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 module.exports = {
 	checkDuplicateVote,
+	addVote,
 };
