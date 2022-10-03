@@ -12,6 +12,14 @@ CREATE TABLE comments_votes (
   vote_given TEXT NOT NULL
 );`;
 
+const ADD_COMMENT_VOTE_QUERY = `
+INSERT INTO comments_votes (
+	comment_id,
+	user_id,
+	vote_given
+) 
+VALUES (?, ?, ?);
+`;
 
 /**
  * TODO Add one point to the score of a comment.
