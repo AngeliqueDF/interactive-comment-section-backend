@@ -2,7 +2,7 @@ const path = require("path");
 const Database = require(path.resolve(__dirname, "./database.query.runner"));
 
 /**
- * Create comments votes table
+ * Create comments votes table. The table is used to keep track of the current user's comment votes.
  */
 const CREATE_COMMENT_VOTES_TABLE_QUERY = `CREATE TABLE comments_votes(
   id INTEGER PRIMARY KEY,
