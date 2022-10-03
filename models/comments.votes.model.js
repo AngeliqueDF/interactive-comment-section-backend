@@ -24,7 +24,7 @@ CREATE TABLE comments_votes (
 /**
  * TODO Select all votes made by a given user.
  */
-const GET_ALL_USER_comments_votes = `SELECT id, comment_id, vote_given FROM comments_votes WHERE user_id = ?`;
+const GET_ALL_USER_COMMENTS_VOTES = `SELECT comment_id, vote_given FROM comments_votes WHERE user_id = ?;`;
 
 /**
  * Drop comment votes table
@@ -42,7 +42,7 @@ module.exports = {
 	},
 	getAllByUser: async function (userID) {
 		const userVotes = await Database.getById(
-			GET_ALL_USER_comments_votes,
+			GET_ALL_USER_COMMENTS_VOTES,
 			userID
 		);
 
