@@ -33,7 +33,19 @@ function getAll(sqlQuery) {
 	});
 }
 
+function getById(sqlQuery, parameters) {
+	return new Promise(function (resolve, reject) {
+		db.all(sqlQuery, parameters, function (err, row) {
+			if (err) {
+				reject(err);
+			}
+			resolve(row);
+		});
+	});
+}
+
 module.exports = {
 	addOne: runPreparedStatement,
+	getById,
 	getAll,
 };
