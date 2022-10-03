@@ -27,6 +27,9 @@ CommentsRouter.post(
 	}
 );
 
+/**
+ * Add a new reply
+ */
 CommentsRouter.post(
 	"/newReply",
 	CommentController.checkEmptyReply,
