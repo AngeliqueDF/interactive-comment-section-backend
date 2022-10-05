@@ -8,8 +8,8 @@ const CommentsVotesModel = require(path.resolve(
 async function checkDuplicateVote(req, res, next) {
 	try {
 		const alreadyVoted = await CommentsVotesModel.getOne([
-			req.body.user,
-			req.body.coommentID,
+			req.body.newVote.user,
+			req.body.newVote.commentID,
 		]);
 
 		if (alreadyVoted.length) {
@@ -26,9 +26,9 @@ async function checkDuplicateVote(req, res, next) {
 async function addVote(req, res, next) {
 	try {
 		const addedVote = await CommentsVotesModel.insertOne([
-			req.body.commentID,
-			req.body.user,
-			req.body.voteGiven,
+			req.body.newVote.commentID,
+			req.body.newVote.user,
+			req.body.newVote.voteGiven,
 		]);
 
 		next();
