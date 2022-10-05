@@ -8,7 +8,7 @@ const CommentsVotesModel = require(path.resolve(
 async function checkDuplicateVote(req, res, next) {
 	try {
 		const alreadyVoted = await CommentsVotesModel.getOne([
-			req.body.newVote.user,
+			req.body.newVote.currentUser,
 			req.body.newVote.commentID,
 		]);
 
@@ -27,7 +27,7 @@ async function addVote(req, res, next) {
 	try {
 		const addedVote = await CommentsVotesModel.insertOne([
 			req.body.newVote.commentID,
-			req.body.newVote.user,
+			req.body.newVote.currentUser,
 			req.body.newVote.voteGiven,
 		]);
 
