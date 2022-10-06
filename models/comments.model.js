@@ -73,5 +73,12 @@ module.exports = {
 		);
 		return updatedComment;
 	},
+	decrementScore: async function (parameters) {
+		const updatedComment = await Database.update(
+			DECREMENT_COMMENT_SCORE,
+			parameters
+		);
+		return updatedComment;
+	},
 	DROP_COMMENTS_TABLE_QUERY,
 };
