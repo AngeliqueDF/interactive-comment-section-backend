@@ -29,6 +29,16 @@ const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score
 const GET_ALL_COMMENTS_QUERY = `SELECT * FROM comments;`;
 
 /**
+ * Add one point to the score of a comment.
+ */
+const INCREMENT_COMMENT_SCORE = `
+ UPDATE comments
+ SET 
+	 score = score + 1
+ WHERE 
+	 id = ?`;
+
+/**
  * Drop comments table
  */
 const DROP_COMMENTS_TABLE_QUERY = "DROP TABLE IF EXISTS comments;";
