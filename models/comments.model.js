@@ -56,5 +56,12 @@ module.exports = {
 		const allComments = await Database.getAll(GET_ALL_COMMENTS_QUERY);
 		return allComments;
 	},
+	incrementScore: async function (parameters) {
+		const updatedComment = await Database.update(
+			INCREMENT_COMMENT_SCORE,
+			parameters
+		);
+		return updatedComment;
+	},
 	DROP_COMMENTS_TABLE_QUERY,
 };
