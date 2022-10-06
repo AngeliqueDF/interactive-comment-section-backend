@@ -39,6 +39,16 @@ const INCREMENT_COMMENT_SCORE = `
 	 id = ?`;
 
 /**
+ * Remove one point to the score of a comment.
+ */
+const DECREMENT_COMMENT_SCORE = `
+ UPDATE comments
+ SET 
+	 score = score - 1
+ WHERE 
+	 id = ?`;
+
+/**
  * Drop comments table
  */
 const DROP_COMMENTS_TABLE_QUERY = "DROP TABLE IF EXISTS comments;";
