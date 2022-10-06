@@ -22,14 +22,6 @@ VALUES (?, ?, ?);
 `;
 
 /**
- * TODO Add one point to the score of a comment.
- */
-
-/**
- * TODO Remove one point to the score of a comment.
- */
-
-/**
  * TODO Select all votes made by a given user.
  */
 const GET_ALL_USER_COMMENTS_VOTES = `SELECT comment_id, vote_given FROM comments_votes WHERE user_id = ?;`;
