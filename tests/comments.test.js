@@ -12,6 +12,10 @@ const app = require("../app");
 const api = supertest(app);
 
 const Comment = require(path.resolve(__dirname, "./../models/comments.model"));
+const CommentsVotes = require(path.resolve(
+	__dirname,
+	"./../models/comments.votes.model"
+));
 
 const API_URL = "/api/comments";
 
