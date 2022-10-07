@@ -5,7 +5,7 @@ const Database = require(path.resolve(__dirname, "./database.query.runner"));
  * Create comments votes table. The table is used to keep track of the current user's comment votes.
  */
 const CREATE_COMMENTS_VOTES_TABLE_QUERY = `
-CREATE TABLE comments_votes (
+CREATE TABLE IF NOT EXISTS comments_votes (
   id INTEGER PRIMARY KEY,
   comment_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
