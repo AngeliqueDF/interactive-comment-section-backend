@@ -4,6 +4,9 @@ const db = require(path.resolve(
 	"./../models/database.connection"
 )).connectDatabase();
 
+// Setup database
+const setupDatabase = require(path.resolve(__dirname, "./../setupDatabase"));
+
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
@@ -12,11 +15,20 @@ const Comment = require(path.resolve(__dirname, "./../models/comments.model"));
 
 const API_URL = "/api/comments";
 
-describe('GET "/api/comments"', () => {
-	afterEach(() => {
-		db.run(`DELETE FROM comments;`);
-	});
+beforeEach(() => {
+	return setupDatabase.createDatabase();
+}, 20000);
 
+afterEach(() => {
+	// Empty the database after each test
+	db.serialize(() => {
+		db.run(`DELETE FROM comments;`);
+		db.run(`DELETE FROM comments_votes;`);
+		db.run(`DELETE FROM users;`);
+	});
+}, 20000);
+
+describe('GET "/api/comments"', () => {
 	test("Returns all comments in the database", async () => {
 		const DATA = [
 			{
