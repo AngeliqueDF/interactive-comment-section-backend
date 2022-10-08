@@ -5,7 +5,7 @@ const Database = require(path.resolve(__dirname, "./database.query.runner"));
  * Create comments table
  */
 const CREATE_COMMENTS_TABLE_QUERY = `
-  CREATE TABLE comments (
+  CREATE TABLE IF NOT EXISTS comments (
     id INTEGER PRIMARY KEY,
     content TEXT NOT NULL,
     createdAt TEXT NOT NULL,

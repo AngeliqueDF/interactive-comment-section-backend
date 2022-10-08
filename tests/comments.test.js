@@ -4,19 +4,35 @@ const db = require(path.resolve(
 	"./../models/database.connection"
 )).connectDatabase();
 
+// Setup database
+const setupDatabase = require(path.resolve(__dirname, "./../setupDatabase"));
+
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 
 const Comment = require(path.resolve(__dirname, "./../models/comments.model"));
+const CommentsVotes = require(path.resolve(
+	__dirname,
+	"./../models/comments.votes.model"
+));
 
 const API_URL = "/api/comments";
 
-describe('GET "/api/comments"', () => {
-	afterEach(() => {
-		db.run(`DELETE FROM comments;`);
-	});
+beforeEach(() => {
+	return setupDatabase.createDatabase();
+}, 20000);
 
+afterEach(() => {
+	// Empty the database after each test
+	db.serialize(() => {
+		db.run(`DELETE FROM comments;`);
+		db.run(`DELETE FROM comments_votes;`);
+		db.run(`DELETE FROM users;`);
+	});
+}, 20000);
+
+describe('GET "/api/comments"', () => {
 	test("Returns all comments in the database", async () => {
 		const DATA = [
 			{
@@ -118,11 +134,6 @@ describe('GET "/api/comments"', () => {
 describe('POST "/api/comments/newComment"', () => {
 	const ROUTE = API_URL + "/newComment";
 
-	afterEach(() => {
-		// Empty the database after each test
-		db.run(`DELETE FROM comments;`);
-	});
-
 	const VALID_NEW_COMMENT = {
 		content: "A new comment with all fields.",
 		user: 2,
@@ -179,11 +190,6 @@ describe('POST "/api/comments/newComment"', () => {
 
 describe('POST "/api/comments/newReply"', () => {
 	const ROUTE = API_URL + "/newReply";
-
-	afterEach(() => {
-		// Empty the database after each test
-		db.run(`DELETE FROM comments;`);
-	});
 
 	test("Returns the correct value for the new reply's content.", async () => {
 		// The content as it was typed by the user, without the reference to the username of the first commenter.
