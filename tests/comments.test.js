@@ -4,7 +4,7 @@ const path = require("path");
 const setupDatabase = require(path.resolve(__dirname, "./../setupDatabase"));
 
 const supertest = require("supertest");
-const app = require("../app");
+const app = require("./../app");
 const api = supertest(app);
 
 const Comment = require(path.resolve(__dirname, "./../models/comments.model"));
