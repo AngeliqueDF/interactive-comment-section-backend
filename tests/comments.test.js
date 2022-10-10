@@ -19,6 +19,8 @@ const CommentsVotes = require(path.resolve(
 
 const API_URL = "/api/comments";
 
+jest.retryTimes(3);
+
 beforeEach(() => {
 	return setupDatabase.createDatabase();
 }, 20000);
