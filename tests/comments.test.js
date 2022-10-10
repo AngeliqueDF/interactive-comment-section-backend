@@ -24,12 +24,7 @@ beforeEach(() => {
 }, 20000);
 
 afterEach(() => {
-	// Empty the database after each test
-	db.serialize(() => {
-		db.run(`DELETE FROM comments;`);
-		db.run(`DELETE FROM comments_votes;`);
-		db.run(`DELETE FROM users;`);
-	});
+	return setupDatabase.clearDatabase();
 }, 20000);
 
 describe('GET "/api/comments"', () => {
