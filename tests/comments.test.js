@@ -1,14 +1,10 @@
 const path = require("path");
-const db = require(path.resolve(
-	__dirname,
-	"./../models/database.connection"
-)).connectDatabase();
 
 // Setup database
 const setupDatabase = require(path.resolve(__dirname, "./../setupDatabase"));
 
 const supertest = require("supertest");
-const app = require("../app");
+const app = require("./../app");
 const api = supertest(app);
 
 const Comment = require(path.resolve(__dirname, "./../models/comments.model"));
@@ -19,17 +15,14 @@ const CommentsVotes = require(path.resolve(
 
 const API_URL = "/api/comments";
 
+jest.retryTimes(3);
+
 beforeEach(() => {
 	return setupDatabase.createDatabase();
 }, 20000);
 
 afterEach(() => {
-	// Empty the database after each test
-	db.serialize(() => {
-		db.run(`DELETE FROM comments;`);
-		db.run(`DELETE FROM comments_votes;`);
-		db.run(`DELETE FROM users;`);
-	});
+	return setupDatabase.clearDatabase();
 }, 20000);
 
 describe('GET "/api/comments"', () => {
