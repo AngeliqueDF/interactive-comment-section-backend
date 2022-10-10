@@ -1,8 +1,4 @@
 const path = require("path");
-const db = require(path.resolve(
-	__dirname,
-	"./../models/database.connection"
-)).connectDatabase();
 
 // Setup database
 const setupDatabase = require(path.resolve(__dirname, "./../setupDatabase"));
