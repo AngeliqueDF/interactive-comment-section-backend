@@ -37,10 +37,13 @@ function createDatabase() {
 }
 
 function clearDatabase() {
-	db.serialize(() => {
+	return new Promise(function (resolve, reject) {
 		db.run(`DELETE FROM comments;`);
 		db.run(`DELETE FROM comments_votes;`);
 		db.run(`DELETE FROM users;`);
+		setTimeout(() => {
+			return resolve();
+		});
 	});
 }
 
