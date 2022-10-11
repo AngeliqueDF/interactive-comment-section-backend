@@ -34,10 +34,21 @@ SELECT comment_id
 FROM comments_votes
 WHERE user_id = ?;`;
 
+const GET_SPECIFIC_COMMENT_VOTE_QUERY = `
+SELECT id, vote_given, user_id
+FROM comments_votes
+	WHERE user_id = ? AND comment_id = ?
+;`;
+
 /**
  * Drop comment votes table
  */
 const DROP_COMMENTS_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comments_votes;";
+
+/**
+ * Drop specific comment vote
+ */
+const DROP_COMMENT_VOTE_BY_ID = "DELETE FROM comments_votes WHERE id = ?";
 
 module.exports = {
 	CREATE_COMMENTS_VOTES_TABLE_QUERY,
@@ -63,5 +74,20 @@ module.exports = {
 			parameters
 		);
 		return commentFound;
+	},
+	getOne: async function (parameters) {
+		const voteFound = await Database.getById(
+			GET_SPECIFIC_COMMENT_VOTE_QUERY,
+			parameters
+		);
+		return voteFound;
+	},
+	delete: async function (parameters) {
+		const deletedVote = await Database.delete(
+			DROP_COMMENT_VOTE_BY_ID,
+			parameters
+		);
+
+		return deletedVote;
 	},
 };

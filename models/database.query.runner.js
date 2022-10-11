@@ -48,4 +48,6 @@ module.exports = {
 	addOne: runPreparedStatement,
 	getById,
 	getAll,
+	update: runPreparedStatement,
+	delete: runPreparedStatement,
 };
