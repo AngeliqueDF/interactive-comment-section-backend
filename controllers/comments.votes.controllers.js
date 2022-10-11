@@ -35,22 +35,25 @@ async function checkDuplicateVote(req, res, next) {
 	}
 }
 
-async function addVote(req, res, next) {
-	try {
-		const addedVote = await CommentsVotesModel.insertOne([
-			req.body.newVote.commentID,
-			req.body.newVote.currentUser,
-			req.body.newVote.voteGiven,
-		]);
 
+async function insertVote(req, res, next) {
+	try {
+		if (!req.body.duplicateVote && req.body.newVote.voteGiven === "INCREMENT") {
+			CommentsVotesModel.insertOne([
+				req.body.newVote.commentID,
+				req.body.newVote.currentUser,
+				req.body.newVote.voteGiven,
+			]);
+		}
 		next();
 	} catch (error) {
 		console.log(error);
+		next(error);
 	}
 }
 
 module.exports = {
 	getCommentScore,
 	checkDuplicateVote,
-	addVote,
+	insertVote,
 };
