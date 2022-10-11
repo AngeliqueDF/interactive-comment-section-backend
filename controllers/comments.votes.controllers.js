@@ -1,9 +1,21 @@
 const path = require("path");
+const CommentsModel = require("../models/comments.model");
 
 const CommentsVotesModel = require(path.resolve(
 	__dirname,
 	"./../models/comments.votes.model"
 ));
+
+async function getCommentScore(req, res, next) {
+	try {
+		const comment = await CommentsModel.getAll([req.body.newVote.commentID]);
+		req.body.currentCommentScore = comment[0].score;
+		next();
+	} catch (error) {
+		console.log(error);
+		next(error);
+	}
+}
 
 async function checkDuplicateVote(req, res, next) {
 	try {
@@ -38,6 +50,7 @@ async function addVote(req, res, next) {
 }
 
 module.exports = {
+	getCommentScore,
 	checkDuplicateVote,
 	addVote,
 };
