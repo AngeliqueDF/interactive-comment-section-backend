@@ -41,16 +41,19 @@ CommentsRouter.post(
 	}
 );
 
-/**
- * For all requests to /votes, check whether the new vote is a duplicate.
- */
-CommentsRouter.post("/votes", CommentsVotesController.checkDuplicateVote);
+CommentsRouter.post("/votes/*", CommentsVotesController.getCommentScore);
 
 /**
  * Add a new vote
  */
-CommentsRouter.post("/votes", CommentsVotesController.addVote, (req, res) => {
-	res.status(201).json();
-});
+CommentsRouter.post(
+	"/votes/increment",
+	CommentsVotesController.checkDuplicateVote,
+	CommentsVotesController.incrementScore,
+	CommentsVotesController.insertVote,
+	(req, res) => {
+		res.status(201).json();
+	}
+);
 
 module.exports = CommentsRouter;
