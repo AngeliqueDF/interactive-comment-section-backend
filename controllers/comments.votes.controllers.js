@@ -35,6 +35,18 @@ async function checkDuplicateVote(req, res, next) {
 	}
 }
 
+async function incrementScore(req, res, next) {
+	if (req.body.duplicateVote) {
+		// Cancelling the previous increment instead of repeating it
+		CommentsModel.decrementScore(req.body.newVote.commentID);
+
+		// Deleting the vote from the comments_votes database
+		CommentsVotesModel.delete(req.body.newVote.commentID);
+	} else if (!req.body.duplicateVote) {
+		CommentsModel.incrementScore(req.body.commentID);
+	}
+	next();
+}
 
 async function insertVote(req, res, next) {
 	try {
@@ -55,5 +67,6 @@ async function insertVote(req, res, next) {
 module.exports = {
 	getCommentScore,
 	checkDuplicateVote,
+	incrementScore,
 	insertVote,
 };
