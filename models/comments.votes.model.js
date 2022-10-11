@@ -45,6 +45,11 @@ FROM comments_votes
  */
 const DROP_COMMENTS_VOTES_TABLE_QUERY = "DROP TABLE IF EXISTS comments_votes;";
 
+/**
+ * Drop specific comment vote
+ */
+const DROP_COMMENT_VOTE_BY_ID = "DELETE FROM comments_votes WHERE id = ?";
+
 module.exports = {
 	CREATE_COMMENTS_VOTES_TABLE_QUERY,
 	insertOne: async function (parameters) {
@@ -76,5 +81,13 @@ module.exports = {
 			parameters
 		);
 		return voteFound;
+	},
+	delete: async function (parameters) {
+		const deletedVote = await Database.delete(
+			DROP_COMMENT_VOTE_BY_ID,
+			parameters
+		);
+
+		return deletedVote;
 	},
 };
