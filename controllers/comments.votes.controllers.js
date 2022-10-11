@@ -19,19 +19,19 @@ async function getCommentScore(req, res, next) {
 
 async function checkDuplicateVote(req, res, next) {
 	try {
-		const alreadyVoted = await CommentsVotesModel.getOne([
+		const duplicate = await CommentsVotesModel.getOne([
 			req.body.newVote.currentUser,
 			req.body.newVote.commentID,
 		]);
 
-		if (alreadyVoted.length) {
-			const error = new Error("Duplicate vote increment or decrement.");
-			error.name = "DuplicateVote";
-			next(error);
+		if (duplicate.length) {
+			req.body.duplicateVote = duplicate;
 		}
+
 		next();
 	} catch (error) {
 		console.log(error);
+		next(error);
 	}
 }
 
