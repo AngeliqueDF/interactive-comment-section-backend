@@ -56,14 +56,14 @@ const DROP_COMMENTS_TABLE_QUERY = "DROP TABLE IF EXISTS comments;";
 module.exports = {
 	CREATE_COMMENTS_TABLE_QUERY,
 	insertOne: async function (parameters) {
-		const addCommentResult = await Database.addOne(
+		const addCommentResult = await Database.insert(
 			NEW_COMMENT_QUERY,
 			parameters
 		);
 		return addCommentResult;
 	},
 	getAll: async function () {
-		const allComments = await Database.getAll(GET_ALL_COMMENTS_QUERY);
+		const allComments = await Database.get(GET_ALL_COMMENTS_QUERY);
 		return allComments;
 	},
 	incrementScore: async function (parameters) {

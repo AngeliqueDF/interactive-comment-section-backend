@@ -22,7 +22,7 @@ function runPreparedStatement(sqlQuery, parameters) {
 	});
 }
 
-function getAll(sqlQuery) {
+function get(sqlQuery) {
 	return new Promise(function (resolve, reject) {
 		db.all(sqlQuery, function (err, rows) {
 			if (err) {
@@ -33,7 +33,7 @@ function getAll(sqlQuery) {
 	});
 }
 
-function getById(sqlQuery, parameters) {
+function getParameterized(sqlQuery, parameters) {
 	return new Promise(function (resolve, reject) {
 		db.all(sqlQuery, parameters, function (err, row) {
 			if (err) {
@@ -45,9 +45,9 @@ function getById(sqlQuery, parameters) {
 }
 
 module.exports = {
-	addOne: runPreparedStatement,
-	getById,
-	getAll,
+	insert: runPreparedStatement,
+	getParameterized,
+	get,
 	update: runPreparedStatement,
 	delete: runPreparedStatement,
 };

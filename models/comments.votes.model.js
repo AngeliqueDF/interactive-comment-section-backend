@@ -26,14 +26,6 @@ VALUES (?, ?, ?);
  */
 const GET_ALL_USER_COMMENTS_VOTES = `SELECT comment_id, vote_given FROM comments_votes WHERE user_id = ?;`;
 
-/**
- * TODO Find whether the current user has already voted for a specific command. Used when they are attempting to vote for any comment.
- */
-const GET_SPECIFIC_COMMENT_VOTE_BY_USER_ID = `
-SELECT comment_id
-FROM comments_votes
-WHERE user_id = ?;`;
-
 const GET_SPECIFIC_COMMENT_VOTE_QUERY = `
 SELECT id, vote_given, user_id
 FROM comments_votes
@@ -53,14 +45,14 @@ const DROP_COMMENT_VOTE_BY_ID = "DELETE FROM comments_votes WHERE id = ?";
 module.exports = {
 	CREATE_COMMENTS_VOTES_TABLE_QUERY,
 	insertOne: async function (parameters) {
-		const addVoteResult = await Database.addOne(
+		const addVoteResult = await Database.insert(
 			ADD_COMMENT_VOTE_QUERY,
 			parameters
 		);
 		return addVoteResult;
 	},
 	getAllByUser: async function (userID) {
-		const userVotes = await Database.getById(
+		const userVotes = await Database.getParameterized(
 			GET_ALL_USER_COMMENTS_VOTES,
 			userID
 		);
@@ -69,14 +61,7 @@ module.exports = {
 	},
 	DROP_COMMENTS_VOTES_TABLE_QUERY,
 	getOne: async function (parameters) {
-		const commentFound = await Database.getById(
-			GET_SPECIFIC_COMMENT_VOTE_BY_USER_ID,
-			parameters
-		);
-		return commentFound;
-	},
-	getOne: async function (parameters) {
-		const voteFound = await Database.getById(
+		const voteFound = await Database.getParameterized(
 			GET_SPECIFIC_COMMENT_VOTE_QUERY,
 			parameters
 		);
