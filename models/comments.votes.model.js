@@ -53,14 +53,14 @@ const DROP_COMMENT_VOTE_BY_ID = "DELETE FROM comments_votes WHERE id = ?";
 module.exports = {
 	CREATE_COMMENTS_VOTES_TABLE_QUERY,
 	insertOne: async function (parameters) {
-		const addVoteResult = await Database.addOne(
+		const addVoteResult = await Database.insert(
 			ADD_COMMENT_VOTE_QUERY,
 			parameters
 		);
 		return addVoteResult;
 	},
 	getAllByUser: async function (userID) {
-		const userVotes = await Database.getById(
+		const userVotes = await Database.getParameterized(
 			GET_ALL_USER_COMMENTS_VOTES,
 			userID
 		);
@@ -69,14 +69,14 @@ module.exports = {
 	},
 	DROP_COMMENTS_VOTES_TABLE_QUERY,
 	getOne: async function (parameters) {
-		const commentFound = await Database.getById(
+		const commentFound = await Database.getParameterized(
 			GET_SPECIFIC_COMMENT_VOTE_BY_USER_ID,
 			parameters
 		);
 		return commentFound;
 	},
 	getOne: async function (parameters) {
-		const voteFound = await Database.getById(
+		const voteFound = await Database.getParameterized(
 			GET_SPECIFIC_COMMENT_VOTE_QUERY,
 			parameters
 		);
