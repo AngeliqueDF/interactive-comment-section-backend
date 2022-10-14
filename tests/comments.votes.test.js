@@ -29,7 +29,7 @@ afterEach(() => {
 	return setupDatabase.clearDatabase();
 }, 20000);
 
-describe.only('POST "/api/comments/votes/increment"', () => {
+describe('POST "/api/comments/votes/increment"', () => {
 	const ROUTE = API_URL + "/votes/increment";
 
 	test("Increments the score of a comment", async () => {
@@ -130,5 +130,52 @@ describe.only('POST "/api/comments/votes/increment"', () => {
 		const addedVote = await CommentsVotesModel.getOne([1, 1]);
 		// console.log(addedVote);
 		expect(addedVote).toHaveLength(0);
+	});
+});
+
+describe.only('POST "/api/comments/votes/increment"', () => {
+	const ROUTE = API_URL + "/votes/decrement";
+
+	test("Decrements the score of a comment", async () => {
+		const DATA = [
+			{
+				user: 1,
+				content: "This comment will receive a vote to increment its score.",
+				score: 12,
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+		];
+
+		DATA.forEach(async (comment) => {
+			try {
+				const addedComment = await CommentsModel.insertOne([
+					comment.user,
+					comment.content,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+				console.log("addedComment", addedComment);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		const response = await api
+			.post(ROUTE)
+			.expect(201)
+			.send({
+				newVote: { commentID: 1, currentUser: 1, voteGiven: "DECREMENT" },
+			})
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
+			.expect("Content-Type", /application\/json/);
+
+		// Check the comments_votes database was properly updated
+		const addedVote = await CommentsVotesModel.getOne([1, 1]);
+		expect(addedVote).toHaveLength(1);
 	});
 });
