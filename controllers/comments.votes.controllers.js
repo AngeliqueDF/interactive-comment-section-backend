@@ -48,9 +48,23 @@ async function incrementScore(req, res, next) {
 	next();
 }
 
+async function decrementScore(req, res, next) {
+	CommentsModel.decrementScore(req.body.commentID);
+	next();
+}
+
 async function insertVote(req, res, next) {
 	try {
 		if (!req.body.duplicateVote && req.body.newVote.voteGiven === "INCREMENT") {
+			CommentsVotesModel.insertOne([
+				req.body.newVote.commentID,
+				req.body.newVote.currentUser,
+				req.body.newVote.voteGiven,
+			]);
+		} else if (
+			!req.body.duplicateVote &&
+			req.body.newVote.voteGiven === "DECREMENT"
+		) {
 			CommentsVotesModel.insertOne([
 				req.body.newVote.commentID,
 				req.body.newVote.currentUser,
@@ -68,5 +82,6 @@ module.exports = {
 	getCommentScore,
 	checkDuplicateVote,
 	incrementScore,
+	decrementScore,
 	insertVote,
 };

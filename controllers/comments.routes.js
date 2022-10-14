@@ -56,4 +56,17 @@ CommentsRouter.post(
 	}
 );
 
+/**
+ * Add a new vote
+ */
+CommentsRouter.post(
+	"/votes/decrement",
+	CommentsVotesController.checkDuplicateVote,
+	CommentsVotesController.decrementScore,
+	CommentsVotesController.insertVote,
+	(req, res) => {
+		res.status(201).json();
+	}
+);
+
 module.exports = CommentsRouter;
