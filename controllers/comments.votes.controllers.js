@@ -61,6 +61,15 @@ async function insertVote(req, res, next) {
 				req.body.newVote.currentUser,
 				req.body.newVote.voteGiven,
 			]);
+		} else if (
+			!req.body.duplicateVote &&
+			req.body.newVote.voteGiven === "DECREMENT"
+		) {
+			CommentsVotesModel.insertOne([
+				req.body.newVote.commentID,
+				req.body.newVote.currentUser,
+				req.body.newVote.voteGiven,
+			]);
 		}
 		next();
 	} catch (error) {
