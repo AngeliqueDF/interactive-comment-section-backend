@@ -42,7 +42,7 @@ async function incrementScore(req, res, next) {
 
 		// Deleting the vote from the comments_votes database
 		CommentsVotesModel.delete(req.body.newVote.commentID);
-	} else if (!req.body.duplicateVote) {
+	} else {
 		CommentsModel.incrementScore(req.body.commentID);
 	}
 	next();
