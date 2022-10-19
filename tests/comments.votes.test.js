@@ -178,4 +178,66 @@ describe.only('POST "/api/comments/votes/decrement"', () => {
 		const addedVote = await CommentsVotesModel.getOne([1, 1]);
 		expect(addedVote).toHaveLength(1);
 	});
+
+	test("Cancels the decrement if it's a duplicate", async () => {
+		const COMMENTS_DATA = [
+			{
+				user: 1,
+				content: "This comment's score was already decremented by currentUser.",
+				score: 11,
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+		];
+
+		// Adding a comment in the comments database
+		COMMENTS_DATA.forEach(async (comment) => {
+			try {
+				const addedComment = await CommentsModel.insertOne([
+					comment.user,
+					comment.content,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		// Add a vote in the comments_votes database
+		const COMMENTS_VOTES_DATA = [
+			{ commentID: 1, currentUser: 1, vote_given: "DECREMENT" },
+		];
+		COMMENTS_VOTES_DATA.forEach(async (vote) => {
+			try {
+				const addedVote = await CommentsVotesModel.insertOne([
+					vote.commentID,
+					vote.currentUser,
+					vote.vote_given,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		const response = await api
+			.post(ROUTE)
+			.expect(201)
+			.send({
+				newVote: { commentID: 1, currentUser: 1, voteGiven: "DECREMENT" },
+			})
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
+			.expect("Content-Type", /application\/json/);
+
+		console.log(response.body);
+
+		// Check the comments_votes database was properly updated
+		const addedVote = await CommentsVotesModel.getOne([1, 1]);
+		// console.log(addedVote);
+		expect(addedVote).toHaveLength(0);
+	});
 });

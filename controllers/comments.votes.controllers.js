@@ -49,7 +49,13 @@ async function incrementScore(req, res, next) {
 }
 
 async function decrementScore(req, res, next) {
-	CommentsModel.decrementScore(req.body.commentID);
+	if (req.body.duplicateVote) {
+		CommentsModel.incrementScore(req.body.commendID);
+
+		CommentsVotesModel.delete(req.body.newVote.commendID);
+	} else {
+		CommentsModel.decrementScore(req.body.commentID);
+	}
 	next();
 }
 
