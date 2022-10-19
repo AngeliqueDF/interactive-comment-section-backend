@@ -133,7 +133,7 @@ describe('POST "/api/comments/votes/increment"', () => {
 	});
 });
 
-describe.only('POST "/api/comments/votes/increment"', () => {
+describe.only('POST "/api/comments/votes/decrement"', () => {
 	const ROUTE = API_URL + "/votes/decrement";
 
 	test("Decrements the score of a comment", async () => {
