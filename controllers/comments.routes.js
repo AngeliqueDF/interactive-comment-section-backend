@@ -41,28 +41,23 @@ CommentsRouter.post(
 	}
 );
 
-CommentsRouter.post("/votes/*", CommentsVotesController.getCommentScore);
-
 /**
  * Add a new vote
  */
+
+// Get information about the vote
 CommentsRouter.post(
-	"/votes/increment",
-	CommentsVotesController.checkDuplicateVote,
-	CommentsVotesController.incrementScore,
-	CommentsVotesController.insertVote,
-	(req, res) => {
-		res.status(201).json();
-	}
+	"/votes/*",
+	CommentsVotesController.getCommentScore,
+	CommentsVotesController.checkDuplicateVote
 );
 
-/**
- * Add a new vote
- */
+CommentsRouter.post("/votes/increment", CommentsVotesController.incrementScore);
+
+CommentsRouter.post("/votes/decrement", CommentsVotesController.decrementScore);
+
 CommentsRouter.post(
-	"/votes/decrement",
-	CommentsVotesController.checkDuplicateVote,
-	CommentsVotesController.decrementScore,
+	"/votes/*",
 	CommentsVotesController.insertVote,
 	(req, res) => {
 		res.status(201).json();
