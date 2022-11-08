@@ -129,6 +129,56 @@ describe('GET "/api/comments"', () => {
 		expect(response.body).toHaveLength(2);
 		expect(rootComment.replies[0]).toBe(2);
 	});
+
+	test("Displays votes given by the current user to each comment", async () => {
+		const DATA = [
+			{
+				user: 1,
+				content:
+					"Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+				score: 12,
+				replyingToUser: null,
+				replyingToComment: null,
+			},
+		];
+
+		DATA.forEach(async (comment) => {
+			try {
+				const addedComment = await Comment.insertOne([
+					comment.user,
+					comment.content,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		const voteResponse = await api
+			.post("/api/comments/votes/increment")
+			.send({
+				newVote: { commentID: 1, currentUser: 1, voteGiven: "INCREMENT" },
+			})
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
+			.expect("Content-Type", /application\/json/);
+
+		const response = await api
+			.get(API_URL)
+			.expect(200)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
+			.expect("Content-Type", /application\/json/);
+
+		expect(response.body).toHaveLength(DATA.length);
+		expect(response.body.voteGiven).toBe(true);
+	});
 });
 
 describe('POST "/api/comments/newComment"', () => {
