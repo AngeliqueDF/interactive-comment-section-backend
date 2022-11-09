@@ -130,7 +130,7 @@ describe('GET "/api/comments"', () => {
 		expect(rootComment.replies[0]).toBe(2);
 	});
 
-	test("Displays votes given by the current user to each comment", async () => {
+	describe("Property voteGiven", () => {
 		const DATA = [
 			{
 				user: 1,
@@ -141,43 +141,48 @@ describe('GET "/api/comments"', () => {
 				replyingToComment: null,
 			},
 		];
-
-		DATA.forEach(async (comment) => {
-			try {
-				const addedComment = await Comment.insertOne([
-					comment.user,
-					comment.content,
-					comment.score,
-					comment.replyingToComment,
-					comment.replyingToUser,
-				]);
-			} catch (error) {
-				console.log(error);
-			}
+		beforeEach(() => {
+			DATA.forEach(async (comment) => {
+				try {
+					const addedComment = await Comment.insertOne([
+						comment.user,
+						comment.content,
+						comment.score,
+						comment.replyingToComment,
+						comment.replyingToUser,
+					]);
+					console.log(addedComment.body);
+				} catch (error) {
+					console.log(error);
+				}
+			});
 		});
 
-		const voteResponse = await api
-			.post("/api/comments/votes/increment")
-			.send({
-				newVote: { commentID: 1, currentUser: 1, voteGiven: "INCREMENT" },
-			})
-			.auth(
-				process.env.REACT_APP_CLIENT_ID,
-				process.env.REACT_APP_CLIENT_SECRET
-			)
-			.expect("Content-Type", /application\/json/);
+		test.only("Sets voteGiven properly when current user incremented a comment", async () => {
+			const voteResponse = await api
+				.post("/api/comments/votes/increment")
+				.send({
+					newVote: { commentID: 1, currentUser: 1, voteGiven: "INCREMENT" },
+				})
+				.auth(
+					process.env.REACT_APP_CLIENT_ID,
+					process.env.REACT_APP_CLIENT_SECRET
+				)
+				.expect("Content-Type", /application\/json/);
 
-		const response = await api
-			.get(API_URL)
-			.expect(200)
-			.auth(
-				process.env.REACT_APP_CLIENT_ID,
-				process.env.REACT_APP_CLIENT_SECRET
-			)
-			.expect("Content-Type", /application\/json/);
+			const response = await api
+				.get(API_URL)
+				.expect(200)
+				.auth(
+					process.env.REACT_APP_CLIENT_ID,
+					process.env.REACT_APP_CLIENT_SECRET
+				)
+				.expect("Content-Type", /application\/json/);
+			console.log(response.body);
+			expect(response.body).toHaveLength(DATA.length);
+			expect(response.body[0].voteGiven).toBe("INCREMENT");
+		});
 
-		expect(response.body).toHaveLength(DATA.length);
-		expect(response.body.voteGiven).toBe(true);
 	});
 });
 
