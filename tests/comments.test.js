@@ -183,6 +183,32 @@ describe('GET "/api/comments"', () => {
 			expect(response.body[0].voteGiven).toBe("INCREMENT");
 		});
 
+		test.only("Sets voteGiven properly when current user decremented a comment", async () => {
+			const voteResponse = await api
+				.post("/api/comments/votes/decrement")
+				.send({
+					newVote: { commentID: 1, currentUser: 1, voteGiven: "DECREMENT" },
+				})
+				.auth(
+					process.env.REACT_APP_CLIENT_ID,
+					process.env.REACT_APP_CLIENT_SECRET
+				)
+				.expect("Content-Type", /application\/json/);
+
+			console.log(voteResponse.body);
+
+			const response = await api
+				.get(API_URL)
+				.expect(200)
+				.auth(
+					process.env.REACT_APP_CLIENT_ID,
+					process.env.REACT_APP_CLIENT_SECRET
+				)
+				.expect("Content-Type", /application\/json/);
+
+			expect(response.body).toHaveLength(DATA.length);
+			expect(response.body[0].voteGiven).toBe("DECREMENT");
+		});
 	});
 });
 
