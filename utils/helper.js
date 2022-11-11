@@ -33,7 +33,7 @@ function trimContent(username, content) {
 /**
  * Adds a replies array to all comments. Then populates the same array with the id keys of received replies.
  */
-function findAllReplies(allComments) {
+function setAllReplies(allComments) {
 	let allCommentsWithReplies = allComments.map((comment) => {
 		return { ...comment, replies: [] };
 	});
@@ -97,7 +97,7 @@ module.exports = {
 	trimContent,
 	formatDate,
 	findRootComment,
-	findAllReplies,
+	setAllReplies,
 	setCurrentUserVotesGiven,
 	setCommentsCreationDate,
 };
