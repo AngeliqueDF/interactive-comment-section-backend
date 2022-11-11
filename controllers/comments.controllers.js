@@ -5,6 +5,10 @@ const CommentModel = require(path.resolve(
 	__dirname,
 	"./../models/comments.model"
 ));
+const CommentsVotesModel = require(path.resolve(
+	__dirname,
+	"./../models/comments.votes.model"
+));
 
 const helper = require("./../utils/helper");
 
