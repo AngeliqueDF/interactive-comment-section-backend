@@ -83,10 +83,21 @@ function setCurrentUserVotesGiven(allComments, allVotes) {
 	});
 }
 
+/**
+ * Formats the date of each comment object in allComments
+ * @returns A new allComments array
+ */
+function setCommentsCreationDate(allComments) {
+	return allComments.map((comment) => {
+		return { ...comment, createdAt: formatDate(comment.createdAt) };
+	});
+}
+
 module.exports = {
 	trimContent,
 	formatDate,
 	findRootComment,
 	findAllReplies,
 	setCurrentUserVotesGiven,
+	setCommentsCreationDate,
 };
