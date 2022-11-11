@@ -108,7 +108,7 @@ async function getAllComments(req, res, next) {
 			commentsWithCurrentUserVotes
 		);
 
-		req.body.allCommentsWithReplies = helper.setCommentsCreationDate(
+		req.body.allComments = helper.setCommentsCreationDate(
 			allCommentsWithReplies
 		);
 
