@@ -118,10 +118,6 @@ async function getAllComments(req, res, next) {
 	}
 }
 
-async function findCurrentUserVotes(req, res, next) {
-	const allUserVotes = await CommentModel.getAllUserVotes();
-}
-
 module.exports = {
 	checkEmptyReply,
 	insertComment,
