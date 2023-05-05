@@ -5,6 +5,10 @@ const CommentModel = require(path.resolve(
 	__dirname,
 	"./../models/comments.model"
 ));
+const CommentsVotesModel = require(path.resolve(
+	__dirname,
+	"./../models/comments.votes.model"
+));
 
 const helper = require("./../utils/helper");
 
@@ -91,20 +95,31 @@ function setRootComment(req, res, next) {
  */
 async function getAllComments(req, res, next) {
 	try {
-		const allComments = await CommentModel.getAll();
-		const allCommentsWithReplies = helper.findAllReplies(allComments);
+		let savedComments = await CommentModel.getAll();
 
-		req.body.allCommentsWithReplies = allCommentsWithReplies.map((comment) => {
-			return { ...comment, createdAt: helper.formatDate(comment.createdAt) };
-		});
+		// Hard code user id until authentication is added
+		const CURRENT_USER_ID = 1;
+		const savedCurrentUserVotes = await CommentsVotesModel.getAllByUser(
+			CURRENT_USER_ID
+		);
+
+		const commentsWithCurrentUserVotes = helper.setCurrentUserVotesGiven(
+			savedComments,
+			savedCurrentUserVotes
+		);
+
+		const allCommentsWithReplies = helper.setAllReplies(
+			commentsWithCurrentUserVotes
+		);
+
+		req.body.allComments = helper.setCommentsCreationDate(
+			allCommentsWithReplies
+		);
+
 		next();
 	} catch (error) {
 		console.log(error);
 	}
-}
-
-async function findCurrentUserVotes(req, res, next) {
-	const allUserVotes = await CommentModel.getAllUserVotes();
 }
 
 module.exports = {

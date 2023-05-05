@@ -33,7 +33,7 @@ function trimContent(username, content) {
 /**
  * Adds a replies array to all comments. Then populates the same array with the id keys of received replies.
  */
-function findAllReplies(allComments) {
+function setAllReplies(allComments) {
 	let allCommentsWithReplies = allComments.map((comment) => {
 		return { ...comment, replies: [] };
 	});
@@ -69,9 +69,35 @@ const findRootComment = function (allComments, currentCommentID) {
 	return findRootComment(allComments, currentComment.replyingToComment);
 };
 
+/**
+ * For each comment, create and set the voteGiven property to indicate whether the current user has given it a vote (null, "INCREMENT", or "DECREMENT") and which.
+ * @returns A new allComments array
+ */
+function setCurrentUserVotesGiven(allComments, allVotes) {
+	return allComments.map((comment) => {
+		voteFound = allVotes.find((vote) => vote.comment_id === comment.id);
+		return {
+			...comment,
+			voteGiven: voteFound ? voteFound.vote_given : null,
+		};
+	});
+}
+
+/**
+ * Formats the date of each comment object in allComments
+ * @returns A new allComments array
+ */
+function setCommentsCreationDate(allComments) {
+	return allComments.map((comment) => {
+		return { ...comment, createdAt: formatDate(comment.createdAt) };
+	});
+}
+
 module.exports = {
 	trimContent,
 	formatDate,
 	findRootComment,
-	findAllReplies,
+	setAllReplies,
+	setCurrentUserVotesGiven,
+	setCommentsCreationDate,
 };

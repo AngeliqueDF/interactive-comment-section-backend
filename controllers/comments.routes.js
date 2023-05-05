@@ -14,7 +14,7 @@ CommentsRouter.use(CommentsSanitizer);
  * Get all comments
  */
 CommentsRouter.get("/", CommentController.getAllComments, (req, res) => {
-	res.json(req.body.allCommentsWithReplies);
+	res.json(req.body.allComments);
 });
 
 /**
