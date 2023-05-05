@@ -9,6 +9,7 @@
 	"scripts": {
 		"start": "cross-env NODE_ENV=production node index.js",
 		"build": "echo 'Building the app'",
+		"start:deployment": "NODE_ENV=production node index.js",
 		"dev": "cross-env NODE_ENV=development nodemon index.js",
 		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
 		"start:test": "cross-env NODE_ENV=test PORT=5001 jest --watchAll"
