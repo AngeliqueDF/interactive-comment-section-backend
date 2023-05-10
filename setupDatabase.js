@@ -31,6 +31,7 @@ function createDatabase() {
 					reject(err);
 				}
 			});
+			console.log("Database ready");
 			resolve();
 		});
 	});
