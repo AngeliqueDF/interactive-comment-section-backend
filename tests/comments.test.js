@@ -151,7 +151,7 @@ describe('GET "/api/comments"', () => {
 			});
 		});
 
-		test.only("Sets voteGiven properly when current user incremented a comment", async () => {
+		test("Sets voteGiven properly when current user incremented a comment", async () => {
 			const voteResponse = await api
 				.post("/api/comments/votes/increment")
 				.send({
@@ -176,7 +176,7 @@ describe('GET "/api/comments"', () => {
 			expect(response.body[0].voteGiven).toBe("INCREMENT");
 		});
 
-		test.only("Sets voteGiven properly when current user decremented a comment", async () => {
+		test("Sets voteGiven properly when current user decremented a comment", async () => {
 			const voteResponse = await api
 				.post("/api/comments/votes/decrement")
 				.send({
