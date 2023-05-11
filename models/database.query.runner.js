@@ -47,7 +47,7 @@ function getParameterized(sqlQuery, parameters) {
 module.exports = {
 	insert: runPreparedStatement,
 	getParameterized,
-	get,
+	get: getParameterized,
 	update: runPreparedStatement,
 	delete: runPreparedStatement,
 };

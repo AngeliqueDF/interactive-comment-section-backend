@@ -23,6 +23,8 @@ const CREATE_COMMENTS_TABLE_QUERY = `
  */
 const NEW_COMMENT_QUERY = `INSERT INTO comments (user, content, createdAt, score,  replyingToComment, replyingToUser) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?)`;
 
+const GET_ONE_COMMENT_QUERY = `SELECT * FROM comments WHERE id = ?;`;
+
 /**
  *  Get all comments
  */
@@ -48,6 +50,13 @@ const DECREMENT_COMMENT_SCORE = `
  WHERE 
 	 id = ?`;
 
+const UPDATE_COMMENT_CONTENT = `
+	UPDATE comments
+	SET
+		content = ?
+	WHERE
+		id = ?`;
+
 /**
  * Drop comments table
  */
@@ -61,6 +70,10 @@ module.exports = {
 			parameters
 		);
 		return addCommentResult;
+	},
+	getOne: async function (parameters) {
+		const comment = await Database.get(GET_ONE_COMMENT_QUERY, parameters);
+		return comment;
 	},
 	getAll: async function () {
 		const allComments = await Database.get(GET_ALL_COMMENTS_QUERY);
@@ -76,6 +89,13 @@ module.exports = {
 	decrementScore: async function (parameters) {
 		const updatedComment = await Database.update(
 			DECREMENT_COMMENT_SCORE,
+			parameters
+		);
+		return updatedComment;
+	},
+	updateComment: async function (parameters) {
+		const updatedComment = await Database.update(
+			UPDATE_COMMENT_CONTENT,
 			parameters
 		);
 		return updatedComment;

@@ -1,0 +1,19 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+      - comments-tdd
+
+jobs:
+  run_jest_tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run start:test
