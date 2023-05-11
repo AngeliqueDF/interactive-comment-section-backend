@@ -416,3 +416,48 @@ describe('PUT "/api/comments/:id"', () => {
 	});
 });
 
+describe('DELETE "/api/comments/:id"', () => {
+	const DATA = [
+		{
+			user: 1,
+			content: "abc",
+			score: 12,
+			replyingToUser: null,
+			replyingToComment: null,
+		},
+	];
+
+	beforeEach(() => {
+		DATA.forEach(async (comment) => {
+			try {
+				const addedComment = await Comment.insertOne([
+					comment.user,
+					comment.content,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+	});
+
+	const ID_COMMENT_TO_EDIT = 1;
+	const ROUTE = API_URL + "/" + ID_COMMENT_TO_EDIT;
+
+	test("Deletes the comment.", async () => {
+		const response = await api
+			.delete(ROUTE)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		const allComments = await Comment.getAll();
+
+		expect(allComments.length).toBe(0);
+	});
+});
