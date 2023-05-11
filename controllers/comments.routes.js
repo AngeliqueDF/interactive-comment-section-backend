@@ -10,6 +10,14 @@ const CommentsVotesController = require("./comments.votes.controllers");
 CommentsRouter.use(CommentsValidator);
 CommentsRouter.use(CommentsSanitizer);
 
+CommentsRouter.delete(
+	"/:id",
+	CommentController.deleteComment,
+	function (req, res) {
+		res.status(200).json();
+	}
+);
+
 CommentsRouter.put(
 	"/:id",
 	CommentController.updateContent,
