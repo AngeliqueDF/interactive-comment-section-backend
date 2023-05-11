@@ -363,3 +363,56 @@ describe('POST "/api/comments/newReply"', () => {
 		expect(response.body.replyingToUser).toBe(2);
 	});
 });
+
+describe('PUT "/api/comments/:id"', () => {
+	const DATA = [
+		{
+			user: 1,
+			content: "abc",
+			score: 12,
+			replyingToUser: null,
+			replyingToComment: null,
+		},
+	];
+
+	beforeEach(() => {
+		DATA.forEach(async (comment) => {
+			try {
+				const addedComment = await Comment.insertOne([
+					comment.user,
+					comment.content,
+					comment.score,
+					comment.replyingToComment,
+					comment.replyingToUser,
+				]);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+	});
+
+	const ID_COMMENT_TO_EDIT = 1;
+	const ROUTE = API_URL + "/" + ID_COMMENT_TO_EDIT;
+
+	test("Updates the comment content.", async () => {
+		const newContent = `Updated content.`;
+
+		const response = await api
+			.put(ROUTE)
+			.auth(
+				process.env.REACT_APP_CLIENT_ID,
+				process.env.REACT_APP_CLIENT_SECRET
+			)
+			.send({
+				newContent,
+			})
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
+
+		const storedComment = await Comment.getOne(ID_COMMENT_TO_EDIT);
+
+		expect(response.body.newContent).toBe(newContent);
+		expect(storedComment[0].content).toBe(newContent);
+	});
+});
+
