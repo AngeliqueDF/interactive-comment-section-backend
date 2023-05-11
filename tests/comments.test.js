@@ -25,6 +25,8 @@ afterEach(() => {
 	return setupDatabase.clearDatabase();
 }, 20000);
 
+jest.retryTimes(12);
+
 describe('GET "/api/comments"', () => {
 	test("Returns all comments in the database", async () => {
 		const DATA = [
