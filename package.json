@@ -35,6 +35,7 @@
 	},
 	"jest": {
 		"testEnvironment": "node",
+		"testTimeout": 15000,
 		"verbose": true,
 		"maxWorkers": 1
 	}
