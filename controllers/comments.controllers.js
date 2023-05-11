@@ -122,9 +122,17 @@ async function getAllComments(req, res, next) {
 	}
 }
 
+async function updateContent(req, res, next) {
+	const comment = await CommentModel.updateComment([
+		req.body.newContent,
+		req.params.id,
+	]);
+	next();
+}
 module.exports = {
 	checkEmptyReply,
 	insertComment,
 	setRootComment,
 	getAllComments,
+	updateContent,
 };
