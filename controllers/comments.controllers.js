@@ -129,10 +129,17 @@ async function updateContent(req, res, next) {
 	]);
 	next();
 }
+
+async function deleteComment(req, res, next) {
+	const deleteComment = await CommentModel.deleteComment(req.params.id);
+	next();
+}
+
 module.exports = {
 	checkEmptyReply,
 	insertComment,
 	setRootComment,
 	getAllComments,
 	updateContent,
+	deleteComment,
 };
