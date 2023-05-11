@@ -46,7 +46,7 @@ const INCREMENT_COMMENT_SCORE = `
 const DECREMENT_COMMENT_SCORE = `
  UPDATE comments
  SET 
-	 score = score - 1
+		score = score - 1
  WHERE 
 	 id = ?`;
 
@@ -56,6 +56,10 @@ const UPDATE_COMMENT_CONTENT = `
 		content = ?
 	WHERE
 		id = ?`;
+
+const DELETE_COMMENT = `
+	DELETE FROM comments
+	WHERE id = ?;`;
 
 /**
  * Drop comments table
@@ -99,6 +103,10 @@ module.exports = {
 			parameters
 		);
 		return updatedComment;
+	},
+	deleteComment: async function (parameters) {
+		const deletedComment = await Database.delete(DELETE_COMMENT, parameters);
+		return deletedComment;
 	},
 	DROP_COMMENTS_TABLE_QUERY,
 };
