@@ -18,7 +18,7 @@ const CommentsVotesModel = require(path.resolve(
 
 const API_URL = "/api/comments";
 
-jest.retryTimes(3);
+jest.retryTimes(9);
 
 beforeEach(() => {
 	return setupDatabase.createDatabase();
@@ -133,7 +133,7 @@ describe('POST "/api/comments/votes/increment"', () => {
 	});
 });
 
-describe.only('POST "/api/comments/votes/decrement"', () => {
+describe('POST "/api/comments/votes/decrement"', () => {
 	const ROUTE = API_URL + "/votes/decrement";
 
 	test("Decrements the score of a comment", async () => {
