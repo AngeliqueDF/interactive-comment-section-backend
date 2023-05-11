@@ -75,7 +75,7 @@ describe('GET "/api/comments"', () => {
 		expect(response.body[0].replyingToUser).toBe(DATA[0].replyingToUser);
 	});
 
-	test("Replies are correctly included in the array of their root comment", async () => {
+	test("Replies are added to root the comment's `replies` array", async () => {
 		const ROOT_COMMENT_CONTENT = "This is the root comment";
 		const DATA = [
 			{
@@ -89,7 +89,7 @@ describe('GET "/api/comments"', () => {
 				user: 2,
 				content: "This is the reply",
 				score: 5,
-				replyingToUser: 0,
+				replyingToUser: 1,
 				replyingToComment: 1,
 			},
 		];
@@ -153,7 +153,7 @@ describe('GET "/api/comments"', () => {
 			});
 		});
 
-		test("Sets voteGiven properly when current user incremented a comment", async () => {
+		test("Voting increments voteGiven", async () => {
 			const voteResponse = await api
 				.post("/api/comments/votes/increment")
 				.send({
@@ -178,7 +178,7 @@ describe('GET "/api/comments"', () => {
 			expect(response.body[0].voteGiven).toBe("INCREMENT");
 		});
 
-		test("Sets voteGiven properly when current user decremented a comment", async () => {
+		test("Voting decrements voteGiven", async () => {
 			const voteResponse = await api
 				.post("/api/comments/votes/decrement")
 				.send({
@@ -237,7 +237,7 @@ describe('POST "/api/comments/newComment"', () => {
 		expect(response.body.replyingToUser).toBeNull();
 	});
 
-	test("Return a status code when the content is missing", async () => {
+	test("Return 400 status code when content is missing", async () => {
 		const response = await api
 			.post(ROUTE)
 			.auth(
@@ -252,7 +252,7 @@ describe('POST "/api/comments/newComment"', () => {
 		// expect(response.body.error).toBe("Missing required field(s).");
 	});
 
-	test("Return a correct response when the id is missing", async () => {
+	test("Return correct response when id is missing", async () => {
 		const response = await api
 			.post(ROUTE)
 			.auth(
@@ -267,7 +267,7 @@ describe('POST "/api/comments/newComment"', () => {
 describe('POST "/api/comments/newReply"', () => {
 	const ROUTE = API_URL + "/newReply";
 
-	test("Returns the correct value for the new reply's content.", async () => {
+	test("Returns status code and new resource.", async () => {
 		// The content as it was typed by the user, without the reference to the username of the first commenter.
 		const NEW_REPLY_ENTERED = "New reply content.";
 		const DATA = [
@@ -317,7 +317,7 @@ describe('POST "/api/comments/newReply"', () => {
 		expect(response.body.replyingToComment).toBe(1);
 		expect(response.body.replyingToUser).toBe(2);
 	});
-	test("Returns the correct information on the comment getting replied to.", async () => {
+	test("Sets reference to the root comment.", async () => {
 		const DATA = [
 			{
 				id: 1,
