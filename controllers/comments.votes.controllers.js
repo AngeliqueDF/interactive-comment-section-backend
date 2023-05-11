@@ -49,9 +49,8 @@ async function incrementScore(req, res, next) {
 
 async function decrementScore(req, res, next) {
 	if (req.body.duplicateVote) {
-		CommentsModel.incrementScore(req.body.commendID);
-
-		CommentsVotesModel.delete(req.body.newVote.commendID);
+		CommentsModel.incrementScore(req.body.commentID);
+		CommentsVotesModel.delete(req.body.newVote.commentID);
 	} else {
 		CommentsModel.decrementScore(req.body.commentID);
 	}
