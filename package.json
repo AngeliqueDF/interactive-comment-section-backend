@@ -32,5 +32,10 @@
 		"helmet": "^5.1.0",
 		"sqlite3": "^5.0.8",
 		"validator": "^13.7.0"
+	},
+	"jest": {
+		"testEnvironment": "node",
+		"verbose": true,
+		"maxWorkers": 1
 	}
 }
