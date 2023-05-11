@@ -6,7 +6,7 @@ on:
       - comments-tdd
 
 jobs:
-  simple_deployment_pipeline:
+  run_jest_tests:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -16,4 +16,4 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run tests
-        run: npm start:test
+        run: npm run start:test
