@@ -10,6 +10,14 @@ const CommentsVotesController = require("./comments.votes.controllers");
 CommentsRouter.use(CommentsValidator);
 CommentsRouter.use(CommentsSanitizer);
 
+CommentsRouter.put(
+	"/:id",
+	CommentController.updateContent,
+	function (req, res) {
+		res.status(200).json({ newContent: req.body.newContent });
+	}
+);
+
 /**
  * Get all comments
  */
