@@ -8,7 +8,6 @@ CommentsSanitizer.post(
 	"/newComment",
 	body("newComment.content").trim().escape(),
 	(req, res, next) => {
-		console.log(req.body.newComment.content);
 		next();
 	}
 );
@@ -21,7 +20,6 @@ CommentsSanitizer.post(
 	body("newComment.content").trim().escape(),
 	body("newComment.replyingToAuthor").trim().escape(),
 	(req, res, next) => {
-		console.log(req.body.newComment.content);
 		next();
 	}
 );
