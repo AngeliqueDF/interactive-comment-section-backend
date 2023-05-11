@@ -27,7 +27,6 @@ async function checkDuplicateVote(req, res, next) {
 		if (duplicate.length) {
 			req.body.duplicateVote = duplicate;
 		}
-
 		next();
 	} catch (error) {
 		console.log(error);
