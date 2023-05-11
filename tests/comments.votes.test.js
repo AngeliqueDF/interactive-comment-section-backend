@@ -237,7 +237,6 @@ describe('POST "/api/comments/votes/decrement"', () => {
 
 		// Check the comments_votes database was properly updated
 		const addedVote = await CommentsVotesModel.getOne([1, 1]);
-		// console.log(addedVote);
 		expect(addedVote).toHaveLength(0);
 	});
 });
