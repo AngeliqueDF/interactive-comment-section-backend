@@ -96,9 +96,8 @@ function setRootComment(req, res, next) {
 async function getAllComments(req, res, next) {
 	try {
 		let savedComments = await CommentModel.getAll();
-
 		// Hard code user id until authentication is added
-		const CURRENT_USER_ID = 1;
+		const CURRENT_USER_ID = 4;
 		const savedCurrentUserVotes = await CommentsVotesModel.getAllByUser(
 			CURRENT_USER_ID
 		);
